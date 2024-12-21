@@ -1,5 +1,7 @@
 # hextxt
 
+![preview](./static/preview.png)
+
 ## Build
 
 - First, compile Go code to WebAssembly:
@@ -16,7 +18,7 @@
 
 - Final directory structure should look like:
 
-  ```sh
+  ```txt
   app/
   ├── index.html
   ├── main.wasm
