@@ -1,0 +1,32 @@
+:root {
+	color-scheme: light dark;
+}
+
+body {}
+
+[role=button],
+button {
+	cursor: pointer;
+}
+
+.omni-theme {
+	background: light-dark(white, black);
+	color: light-dark(black, white);
+}
+
+.centered {
+	display: block;
+	align-content: center;
+}
+
+.container {
+	text-align: center;
+}
+
+/* Source: chatgpt.com <svg></svg> */
+.icon-sm {
+	stroke-width: 2;
+	flex-shrink: 0;
+	height: 1rem;
+	width: 1rem;
+}
