@@ -7,14 +7,12 @@ import (
 )
 
 const (
-	bytesMaxSize = 1024 * 4
+	inputMaxSize = 1024 * 4
 )
 
 func main() {
-	// Register functions to be called from JavaScript
-	js.Global().Set("getMessage", js.FuncOf(getMessage))
-	// Block forever
-	select {}
+	js.Global().Set("getMessage", js.FuncOf(getMessage)) // Register functions to be called from JavaScript
+	select {}                                            // Block forever
 }
 
 // getMessage returns converted args[0] result to Javascript.
@@ -23,7 +21,7 @@ func getMessage(_ js.Value, args []js.Value) interface{} {
 		return "Invalid input"
 	}
 	s := args[0].String()
-	if len(s) > (bytesMaxSize) {
+	if len(s) > (inputMaxSize) {
 		return "Exceeded input size limit"
 	}
 	return internal.Hexdump(s, []string{"-C"})
