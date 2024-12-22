@@ -11,6 +11,7 @@
 package main
 
 import (
+	"fmt"
 	"syscall/js"
 
 	"hextxt/internal"
@@ -30,7 +31,6 @@ func getMessage(_ js.Value, args []js.Value) interface{} {
 	if len(args) == 0 || args[0].Type() != js.TypeString {
 		return "Invalid input"
 	}
-
 	s := args[0].String()
 
 	switch {
@@ -42,7 +42,7 @@ func getMessage(_ js.Value, args []js.Value) interface{} {
 		opts := make([]string, 0, len(args)-1)
 		for _, v := range args[1:] {
 			if v.Type() != js.TypeString {
-				return "Invalid option"
+				return "Invalid non-string option"
 			}
 			opts = append(opts, v.String())
 		}
