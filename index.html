@@ -83,6 +83,7 @@
         <!-- -------------------------------------------------------------- -->
     </head>
     <body class="omni-theme">
+
         <article class="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
             <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
                 <div class="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
@@ -93,47 +94,18 @@
                     <div class="relative flex w-full min-w-0 flex-col">
                         <section>
                             <header>
-                                <h1 class="font-mono font-bold tracking-tighter">
-                                    hextxt
-                                </h1>
+                                <h1 x-data="{ message: 'hextext' }"
+                                    x-text="message" class="font-mono
+                                    font-medium tracking-tighter"></h1>
                             </header>
                         </section>
 
                         <!-- INPUT ---------------------------------------- -->
                         <section>
-                            <form onsubmit="event.preventDefault(); callGo();">
-                                <div class="relative flex mt-5 items-center gap-8">
-                                    <!-- EDITOR --------------------------- -->
-                                    <div id="input-background"
-                                        class="flex w-full cursor-text flex-col rounded-xl bg-zinc-900 transition-colors contain-inline-size"
-                                        style="view-transition-name:var(--vt-composer)"
-                                    >
-                                        <div class="flex min-h-[48px] items-start pl-2!">
-                                            <div class="min-w-0 max-w-full flex-1">
-                                                <div class="text-primary max-h-[45dvh] max-h-80 overflow-auto default-browser">
-                                                    <textarea autofocus=""
-                                                        class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary placeholder:text-secondary"
-                                                        cols="80"
-                                                        data-virtualkeyboard="true"
-                                                        id="input"
-                                                        placeholder="Enter text"
-                                                    ></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- ---------------------------------- -->
-                                    <button type="submit"
-                                        aria-label="Process text" 
-                                        class="font-bold text-xs absolute right-0 bottom-0 text-zinc-800
-                                        bg-zinc-50 h-8 w-8 rounded hover:text-zinc-600 rounded-full
-                                        mx-[1.125rem] my-[.5rem] transition-colors" 
-                                    >Go</button>
-                                </div>
-
+                            <form onsubmit="event.preventDefault(); callGo();" class="mt-8 space-y-5">
                                 <!-- OPTIONS ------------------------------ -->
                                 <div x-data="{ selected: '-C' }"
-                                    class="flex gap-3 text-xs font-mono justify-between w-full mt-3" 
+                                    class="flex gap-3 text-xs font-mono justify-between w-full" 
                                 >
                                     <pre>$ hexdump <code 
                                         aria-label="hexdump option" 
@@ -149,18 +121,56 @@
                                     </div>
                                 </div>
                                 <!-- -------------------------------------- -->
+
+                                <!-- EDITOR ------------------------------- -->
+                                <div class="relative flex items-center gap-8">
+                                    <div id="input-background"
+                                        class="flex w-full cursor-text flex-col rounded-xl bg-zinc-900 transition-colors contain-inline-size"
+                                        style="view-transition-name:var(--vt-composer)"
+                                    >
+                                        <div class="flex min-h-[48px] items-start pl-2!">
+                                            <div class="min-w-0 max-w-full flex-1">
+                                                <div class="text-primary max-h-[45dvh] max-h-80 overflow-auto default-browser">
+                                                    <textarea autofocus=""
+                                                        class="block min-h-40 w-full py-1 px-2.5
+                                                        resize-none! border-0 bg-transparent px-0 py-2
+                                                        text-primary font-mono placeholder:text-secondary"
+                                                        cols="80"
+                                                        data-virtualkeyboard="true"
+                                                        id="input"
+                                                        placeholder="Enter text"
+                                                    ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div 
+                                        x-data="{ submitCount: 0 }"
+                                        class="flex gap-0 flex-col items-center font-bold text-xs absolute right-0 bottom-0"
+                                    >
+                                        <button 
+                                            type="submit"
+                                            @click="submitCount++"
+                                            aria-label="Process text" 
+                                            class="text-zinc-800 bg-zinc-50 h-8 w-8 rounded hover:text-zinc-600 rounded-full mx-[1.125rem] my-[.5rem] transition-colors" 
+                                        >Go</button>
+                                        <span x-text="submitCount" class="font-mono text-xs"></span>
+                                    </div>
+                                </div>
+                                <!-- -------------------------------------- -->
                             </form>
                         </section>
                         <!-- ---------------------------------------------- -->
 
                         <!-- OUTPUT --------------------------------------- -->
                         <section>
-                            <div class="relative mt-14 py-1 px-2.5 rounded-xl" style="border:.5px solid #111111;">
-                                <!-- Each rune outputs 3 bytes (2 hex digits + space). -->
+                            <div style="border:.5px solid #111111;"
+                                class="relative mt-14 py-1 px-2.5 rounded-xl">
                                 <div>
                                     <header style="align-content:center; height:1.5rem; top:-.5rem; left:50%;"
                                         class="absolute flex text-xs font-mono" 
                                     >Output</header>
+
                                     <!-- COPY BUTTON ---------------------- -->
                                     <div class="sticky top-9 md:top-[5.75rem]">
                                         <div class="absolute bottom-1 -right-1 flex h-9 items-center">
@@ -176,8 +186,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- ---------------------------------- -->
+
                                     <!-- HEXDUMP OUTPUT ------------------- -->
                                     <code class="overflow-scroll">
+                                        <!-- Each rune outputs 3 bytes (2hex-digits+space). -->
                                         <output aria-live="Processed text to hex" 
                                             class="overflow-x-scroll text-sm font-mono block min-h-20 py-2 min-w-[78ch]"
                                             id="outputBytes"
