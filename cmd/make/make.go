@@ -12,45 +12,54 @@ func main() {
 	if len(os.Args) < 2 {
 		printUsageAndExit(1)
 	}
-	fn, ok := commandToFunc[Command(strings.TrimSpace(os.Args[1]))]
+	cmd := Command(strings.TrimSpace(os.Args[1]))
+	fun, ok := commandToFunc[cmd]
 	if !ok {
 		fmt.Printf("Unknown command: %s\n", os.Args[1])
 		printUsageAndExit(1)
 	}
-	fn()
+	fun()
 }
 
 type Command string
 
 const (
-	clean Command = "clean"
-	build Command = "build"
-	serve Command = "serve"
-	test  Command = "test"
+	Clean Command = "clean"
+	Build Command = "build"
+	Serve Command = "serve"
+	Test  Command = "test"
 )
 
 var (
 	progn         = "main.wasm"
 	commandToFunc = map[Command]func(){
-		clean: func() { runCmd("go", "clean"); runCmd("rm", "-f", progn) },
-		build: func() { runCmd("go", "build", "-o", progn, "main.go") },
-		serve: func() { runCmd("go", "run", "-v", "cmd/serve/serve.go") },
-		test: func() {
-			runCmd("go", "test", "-v", "./internal/...") // Avoid env error: `fork/exec /tmp/go-build1319822464/b001/internal.test: exec format error`
+		Clean: func() {
+			run("go", "clean")
+			run("rm", "-f", progn)
+		},
+		Build: func() {
+			run("go", "build", "-o", progn, "main.go")
+		},
+		Serve: func() {
+			run("go", "run", "-v", "cmd/serve/serve.go")
+		},
+		Test: func() {
+			run("go", "test", "-v", "./internal/...") // Avoid env error: `fork/exec /tmp/go-build1319822464/b001/internal.test: exec format error`
 			_ = os.Setenv("GOOS", "js")
 			_ = os.Setenv("GOARCH", "wasm")
-			runCmd("go", "test", "-v", "./cmd/...")
+			run("go", "test", "-v", "./cmd/...")
 		},
+		// Deploy: func() { run("deploy", "my-deploy-script") },
 	}
 )
 
-func runCmd(name string, args ...string) {
+func run(name string, args ...string) {
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if name == "go" {
 		switch Command(args[0]) {
-		case build, serve:
+		case Build, Serve:
 			cmd.Env = append(os.Environ(), "GOOS=js", "GOARCH=wasm")
 		}
 	}
@@ -69,8 +78,8 @@ func printUsageAndExit(code int) {
 
 func commandKeys() []string {
 	a := make([]string, 0, len(commandToFunc))
-	for s := range commandToFunc {
-		a = append(a, string(s))
+	for k := range commandToFunc {
+		a = append(a, string(k))
 	}
 	sort.Strings(a) // Sort commands for predictable listing order
 	return a
