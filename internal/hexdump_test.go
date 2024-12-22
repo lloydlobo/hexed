@@ -5,6 +5,14 @@ import (
 	"testing"
 )
 
+var todo string = `<!DOCTYPE html>
+<html lang="en">
+	<head>
+	</head>
+	<body>
+	</body>
+</html>`
+
 func TestTxtToHex(t *testing.T) {
 	tests := []struct {
 		name  string
@@ -51,13 +59,25 @@ func TestTxtToHex(t *testing.T) {
 import "fmt"`,
 			want: "70 61 63 6b 61 67 65 20 69 6e 74 65 72 6e 61 6c 0a 0a 69 6d 70 6f 72 74 20 22 66 6d 74 22",
 		},
-	}
+		{
+			name: "learn with go",
+			input: `package main
 
-	for _, tt := range tests {
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, 世界")
+}
+
+`,
+			want: `70 61 63 6b 61 67 65 20 6d 61 69 6e 0a 0a 69 6d 70 6f 72 74 20 22 66 6d 74 22 0a 0a 66 75 6e 63 20 6d 61 69 6e 28 29 20 7b 0a 09 66 6d 74 2e 50 72 69 6e 74 6c 6e 28 22 48 65 6c 6c 6f 2c 20 e4 b8 96 e7 95 8c 22 29 0a 7d 0a 0a`,
+		},
+	}
+	for i, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			args := []string{}
-			if got := Hexdump(tt.input, args); got != tt.want {
-				t.Errorf("expected '%v', got '%v'", tt.want, got)
+			if got := Hexdump(tt.input, args); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("test %v\nexpected:\n%v\ngot:\n%v", i, tt.want, got)
 			}
 		})
 	}
@@ -90,7 +110,6 @@ func TestGenerateHexOffsets(t *testing.T) {
 			output: []string{"00000000", "00000010", "00000020", "00000030", "00000040", "00000050", "00000060", "00000070", "00000080", "00000090"},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			chunkSize := 16

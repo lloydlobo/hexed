@@ -70,6 +70,8 @@ func chunkHexBytes(b []byte, size int) [][]byte {
 	return a
 }
 
+// UnescapeString unescapes entities like "&lt;" to become "\<". It unescapes a
+// larger range of entities than EscapeString escapes. substr = html.UnescapeString(substr)
 func chunkHexASCII(s string, size int) []string {
 	var a []string
 	n := len(s)
@@ -78,7 +80,9 @@ func chunkHexASCII(s string, size int) []string {
 		if j > n {
 			j = n
 		}
-		a = append(a, strings.Map(toValidASCIIRune, string(s[i:j])))
+		substr := string(s[i:j])
+		substr = strings.Map(toValidASCIIRune, substr)
+		a = append(a, substr)
 	}
 	return a
 }

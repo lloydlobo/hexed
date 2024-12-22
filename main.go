@@ -31,7 +31,6 @@ func getMessage(_ js.Value, args []js.Value) interface{} {
 		return "Invalid input"
 	}
 	s := args[0].String()
-
 	switch {
 	case len(s) > (inputMaxSize):
 		return "Exceeded input size limit"

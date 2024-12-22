@@ -5,3 +5,5 @@ main.wasm
 wasm_exec.js
 make
 !cmd/make
+serve
+txt

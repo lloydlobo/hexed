@@ -8,6 +8,10 @@ import (
 // watch:
 //
 //	find -name '*go' -or -name '*.html' | entr -crs "go run cmd/make/make.go build; go run cmd/make/make.go serve"
+//
+// build:
+//
+//	go build -gcflags "-m=1" -ldflags="-s" -o serve cmd/serve/serve.go
 const (
 	port    string = "8080"
 	rootDir string = "."

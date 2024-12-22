@@ -20,31 +20,30 @@
             }
             );
 
+        // Sanitize input for potential XSS atttacks or injection
+        // text=text.replace(/[<>]/g, "");
         /**
-             * Triggered by a user event such as a button's `onclick` trigger.
-             * Calls a Go function exposed via WebAssembly to process the input text.
-             * Updates the output element with the result.
-             * @return {void}
-             */
+         * Triggered by a user event such as a button's `onclick` trigger.
+         * Calls a Go function exposed via WebAssembly to process the input text.
+         * Updates the output element with the result.
+         * @return {void}
+         */
         function callGo() {
             const textarea = document.getElementById("input");
             const options = document.getElementById("options");
-            const text = textarea.value.replace(/[<>]/g, "");
-            // Sanitize input for potential XSS atttacks or injection
             let hexdump;
-            if (options.value === "") {
-                // default for Option "hex"
-                hexdump = getMessage(text);
+            if (options.value === "") { // default for Option "hex"
+                hexdump = getMessage(textarea.value);
             } else {
-                hexdump = getMessage(text, options.value);
+                hexdump = getMessage(textarea.value, options.value);
             }
             document.getElementById("outputBytes").textContent = hexdump;
         }
 
         /**
-             * Copies the content of the output element to the clipboard.
-             * @return {void}
-             */
+         * Copies the content of the output element to the clipboard.
+         * @return {void}
+         */
         function copyOutput() {
             const output = document.getElementById("outputBytes");
             const text = output.textContent;
@@ -52,10 +51,10 @@
         }
 
         /**
-             * copyToClipboard copies a given string to the clipboard.
-             * @param {string} s - The string to copy.
-             * @return {void}
-             */
+         * copyToClipboard copies a given string to the clipboard.
+         * @param {string} s - The string to copy.
+         * @return {void}
+         */
         function copyToClipboard(s) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(s).then(()=>console.log("Text copied successfully"), (err)=>console.error("Failed to copy text:", err), );
