@@ -1,3 +1,9 @@
+// Fix editor/lsp import issues:
+//
+//	sudo apt install direnv			# Install once
+//	echo "$(direnv hook zsh)		# Enable direnv once
+//
+//	echo "export GOOS=js\nexport GOARCH=wasm" > .envrc && direnv allow
 package main
 
 import (
@@ -20,9 +26,35 @@ func getMessage(_ js.Value, args []js.Value) interface{} {
 	if len(args) == 0 || args[0].Type() != js.TypeString {
 		return "Invalid input"
 	}
+
 	s := args[0].String()
-	if len(s) > (inputMaxSize) {
+
+	switch {
+	case len(s) > (inputMaxSize):
 		return "Exceeded input size limit"
+	case len(args) == 1:
+		return internal.Hexdump(s, []string{})
+	default:
+		opts := make([]string, 0, len(args)-1)
+		for _, v := range args[1:] {
+			if v.Type() != js.TypeString {
+				return "Invalid option"
+			}
+			opts = append(opts, v.String())
+		}
+		return internal.Hexdump(s, opts)
 	}
-	return internal.Hexdump(s, []string{"-C"})
 }
+
+// ValueOf returns x as a JavaScript value:
+//
+//	| Go                     | JavaScript             |
+//	| ---------------------- | ---------------------- |
+//	| js.Value               | [its value]            |
+//	| js.Func                | function               |
+//	| nil                    | null                   |
+//	| bool                   | boolean                |
+//	| integers and floats    | number                 |
+//	| string                 | string                 |
+//	| []interface{}          | new array              |
+//	| map[string]interface{} | new object             |

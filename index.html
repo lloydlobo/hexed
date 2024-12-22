@@ -32,7 +32,7 @@
             const textarea = document.getElementById("input");
             // Sanitize input to prevent potential XSS atttacks or injection
             const text = textarea.value.replace(/[<>]/g, "");
-            const res = getMessage(text);
+            const res = getMessage(text, "-C");
             document.getElementById("outputBytes").textContent = res;
         }
 

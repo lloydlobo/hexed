@@ -15,12 +15,12 @@ const (
 )
 
 // Hexdump converts a string to its hexadecimal representation.
-func Hexdump(s string, args []string) string {
+func Hexdump(s string, opts []string) string {
 	out := chunkString(hex.EncodeToString([]byte(s)), hexChunkSep, hexChunkSize)
-	if len(args) == 0 {
+	if len(opts) == 0 {
 		return out
 	}
-	switch cmd := args[0]; cmd {
+	switch cmd := opts[0]; cmd {
 	case "-C":
 		size := 16
 		h := chunkHexBytes([]byte(out), size*(hexChunkSize+hexChunkSepLen))
