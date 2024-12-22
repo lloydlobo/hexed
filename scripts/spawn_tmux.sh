@@ -16,15 +16,11 @@ tmux send-keys -t $SESSION_NAME "nvim ." C-m
 
 # Watch for changes, rebuild and serve (with python)
 tmux split-window -h -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "find -name '*go' -or -name '*.html' | entr -crs 'GOOS=js GOARCH=wasm go build -o main.wasm main.go; python -m http.server'" C-m
+tmux send-keys -t $SESSION_NAME "find -name '*go' -or -name '*.html' | entr -crs 'go run cmd/make/make.go build; go run cmd/make/make.go serve'" C-m
 
 # Watch for changes and test
 tmux split-window -v -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "find -name '*go' -or -name '*.html' | entr -crs 'go test -v internal/hexdump.go internal/hexdump_test.go'" C-m
-
-# Watch for changes and serve (with Go cmd)
-tmux split-window -v -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "make serve-watch" C-m
+tmux send-keys -t $SESSION_NAME "find -name '*go' -or -name '*.html' | entr -crs 'go run cmd/make/make.go test'" C-m
 
 # Select the first pane
 tmux select-pane -t $SESSION_NAME:0.0
