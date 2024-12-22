@@ -4,6 +4,10 @@
 //	echo "$(direnv hook zsh)		# Enable direnv once
 //
 //	echo "export GOOS=js\nexport GOARCH=wasm" > .envrc && direnv allow
+//
+// Manually:
+//
+//	GOOS=js GOARCH=wasm nvim .
 package main
 
 import (

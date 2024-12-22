@@ -23,11 +23,11 @@
             });
 
         /**
-             * Triggered by a user event such as a button's `onclick` trigger.
-             * Calls a Go function exposed via WebAssembly to process the input text.
-             * Updates the output element with the result.
-             * @return {void}
-             */
+         * Triggered by a user event such as a button's `onclick` trigger.
+         * Calls a Go function exposed via WebAssembly to process the input text.
+         * Updates the output element with the result.
+         * @return {void}
+         */
         function callGo() {
             const textarea = document.getElementById("input");
             // Sanitize input to prevent potential XSS atttacks or injection
@@ -37,9 +37,9 @@
         }
 
         /**
-             * Copies the content of the output element to the clipboard.
-             * @return {void}
-             */
+         * Copies the content of the output element to the clipboard.
+         * @return {void}
+         */
         function copyOutput() {
             const output = document.getElementById("outputBytes");
             const text = output.textContent;
@@ -47,10 +47,10 @@
         }
 
         /**
-             * copyToClipboard copies a given string to the clipboard.
-             * @param {string} s - The string to copy.
-             * @return {void}
-             */
+         * copyToClipboard copies a given string to the clipboard.
+         * @param {string} s - The string to copy.
+         * @return {void}
+         */
         function copyToClipboard(s) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(s).then(
@@ -86,13 +86,14 @@
         <!-- -------------------------------------------------------------- -->
     </head>
     <body class="omni-theme">
+        <!-- ALPINE JS ---------------------------------------------------- -->
         <div x-data="{ open: false }">
             <button @click="open = true">Expand</button>
-
             <span x-show="open">
                 Content...
             </span>
         </div>
+        <!-- -------------------------------------------------------------- -->
 
         <article class="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
             <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
