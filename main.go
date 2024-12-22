@@ -11,14 +11,13 @@
 package main
 
 import (
-	"fmt"
 	"syscall/js"
 
 	"hextxt/internal"
 )
 
 const (
-	inputMaxSize = 1024 * 4
+	inputMaxSize = (2 << 8) * (2 << 4) // 512*32=>16384
 )
 
 func main() {
