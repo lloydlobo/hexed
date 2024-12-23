@@ -139,10 +139,10 @@
                             class="relative w-full cursor-text rounded-xl bg-zinc-900 transition-colors contain-inline-size">
                             <!-- INPUT ------------------------------------ -->
                             <div
-                                class="max-h-[60dvh] min-h-[48px] h-auto overflow-auto default-browser flex gap-2 items-start text-primary">
+                                class="max-h-[60dvh] h-auto overflow-auto default-browser flex gap-2 items-start text-primary">
                                 <textarea x-data x-grow x-model="textareaInput" type="text" placeholder="Enter text..."
                                     autofocus="" cols="80" rows="4" data-virtualkeyboard="true" id="input"
-                                    class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary font-mono placeholder:text-secondary"></textarea>
+                                    class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"></textarea>
                             </div>
                             <!-- ------------------------------------------ -->
 
@@ -212,7 +212,7 @@
         </div>
     </main>
     <footer
-        class="fixed bottom-0 left-0 right-0 flex justify-center items-center space-x-2 py-2 text-sm text-center font-mono">
+        class="sr-only fixed bottom-0 left-0 right-0 flex justify-center items-center space-x-2 py-2 text-sm text-center font-mono">
         <p>&copy; 2024</p>
     </footer>
 </body>
