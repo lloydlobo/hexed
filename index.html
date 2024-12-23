@@ -45,6 +45,8 @@
                 hexdump = getMessage(textarea.value, options.value);
             }
             document.getElementById("outputBytes").textContent = hexdump;
+            // new ArrayBuffer();
+            // new TypedArray();
         }
 
         /**
@@ -57,38 +59,52 @@
             copyToClipboard(text);
         }
 
+        function readClipboard() {
+            navigator.clipboard.readText()
+                .then((clipText) => (document.getElementById("input").innerText += clipText),);
+        }
+
         /**
          * copyToClipboard copies a given string to the clipboard.
          * @param {string} s - The string to copy.
          * @return {void}
          */
         function copyToClipboard(s) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(s).then(
-                    () => { },
-                    (err) => console.error("Failed to copy text:", err),
-                );
-                return;
+            // See https://stackoverflow.com/a/60292243
+            // See https://www.freecodecamp.org/news/copy-text-to-clipboard-javascript/
+            if (window.isSecureContext) {
+                // Clipboard API is only supported for pages served over HTTPS.
+                navigator.permissions.query({name: "write-on-clipboard"}).then((result) => {
+                    if (result.name == "granted" || result.state == "prompt") {
+                        console.log("'write' access granted")
+                    }
+                });
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(s).then(() => {
+                        /* Resolved - text copied to clipboard successfully */
+                    }, (err) => {
+                        console.error("Failed to copy text:", err)
+                        /* Rejected - text failed to copy to the clipboard */
+                    });
+                    return;
+                }
             }
-
             const textarea = document.createElement("textarea");
             textarea.value = s;
+            textarea.style.position = "fixed";// Avoid scrolling to page bottom
             document.body.appendChild(textarea);
-
+            textarea.focus();
             textarea.select();
             try {
-                document.execCommand("copy");
+                const success = document.execCommand("copy");
+                if (!success) {
+                    console.error("Failed to copy")
+                }
             } catch (err) {
                 console.error("Fallback copy failed:", err);
                 alert("Manual copy: " + s);
             }
-
             document.body.removeChild(textarea);
-        }
-
-        function readClipboard() {
-            navigator.clipboard.readText()
-                .then((clipText) => (document.getElementById("input").innerText += clipText),);
         }
     </script>
     <!-- ------------------------------------------------------------------ -->
@@ -100,7 +116,7 @@
             <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
                 <a href="/" class="font-semibold font-mono"><span class="hover:text-blue-500">hextxt</span></a>
                 <div class="hidden items-center justify-end space-x-6 py-4 pr-6 text-zinc-800 md:flex">
-                    <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-gray-600"><svg
+                    <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-zinc-600"><svg
                             class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <title>GitHub</title>
                             <path
@@ -111,23 +127,17 @@
             </nav>
         </div>
     </header>
-
-
-    <main class="
-            w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] 
-            text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]
-            ">
-        <!-- PAGE SCROLL PROGRESS ----------------------------------------- -->
+    <main class="w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] 
+            text-token-text-primary focus-visible:outline-2 
+            focus-visible:outline-offset-[-4px]">
         <div x-data="{ scrollPos: {} }" x-init="scrollPos = $scrollAmount" @scroll.window="scrollPos = $scrollAmount">
             <div x-cloak x-show="scrollPos.scrollPercent > 0" :style="{ width: `${scrollPos.scrollPercent}%` }"
-                class="z-30 fixed inset-x-0 top-0 h-1 bg-blue-600 transition-all"></div>
+                class="z-30 fixed inset-x-0 top-0 h-1 bg-blue-200 transition-all"></div>
             <div x-cloak x-transition x-show="scrollPos.atEnd" role="alert"
                 class="fixed inset-0 grid place-content-center bg-zinc-50/[4%] transition-all">
                 <span class="sr-only">End of file</span>
             </div>
         </div>
-        <!-- -------------------------------------------------------------- -->
-
         <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
             <div class="mx-auto gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
                 <!-- INPUT ------------------------------------------------ -->
@@ -144,8 +154,8 @@
                                 class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
                                 <header style="align-content:center; height:1.5rem; left:50%;"
                                     class="-top-5 absolute flex text-xs font-mono">stdin</header>
-                                <textarea x-data x-grow x-model="textareaInput" type="text" placeholder="Enter text..."
-                                    autofocus="" cols="80" rows="11" data-virtualkeyboard="true" id="input"
+                                <textarea x-data x-grow x-model="textareaInput" cols="80" data-virtualkeyboard="true"
+                                    id="input" placeholder="Enter text..." rows="11" type="text" autofocus=""
                                     class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"></textarea>
                             </div>
                             <!-- ------------------------------------------ -->
@@ -153,21 +163,22 @@
                             <!-- FORM CONTROLS ---------------------------- -->
                             <div class="flex space-between justify-between items-center px-2 py-1">
                                 <div x-data="{ submitCount: 0 }" class="flex relative gap-2 items-center">
-                                    <button onclick="processInput()" @click="submitCount++" aria-label="Process text"
-                                        type="button" type="submit"
+                                    <button @click="submitCount++" aria-label="Process text" onclick="processInput()"
+                                        title="Process" type="submit"
                                         class="text-lg flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-emerald-500">✓<span
                                             class="sr-only">Process</span></button>
                                     <span x-text="submitCount"
                                         class="hidden absolute right-4 bottom-8 text-[.5rem]"></span>
                                 </div>
                                 <div class="relative grid">
-                                    <button @click="$persistDelete('textareaInput')"
-                                        aria-label="Delete persisted input from local storage" type="button"
+                                    <button @click="$persistDelete('textareaInput')" type="button"
+                                        aria-label="Delete persisted input from local storage"
+                                        title="Delete input from local storage"
                                         class="text-sm flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗<span
                                             class="sr-only">Trash</span></button>
                                     <div x-cloak x-show="hasDelete" role="alert"
                                         class="absolute bottom-12 right-1 text-rose-300">
-                                        Deleted from storage!</div>
+                                        Deleted from local storage!</div>
                                 </div>
                             </div>
                             <!-- ------------------------------------------ -->
@@ -175,28 +186,34 @@
                         <!-- ---------------------------------------------- -->
 
                         <!-- STICKY CONTROLS ------------------------------ -->
-                        <div x-data="{ selected: $persist('-C'), hasDelete: !true }"
+                        <div x-data="{ selected: $persist('-C'), hasDelete: !true }" @persist:delete="hasDelete = true"
                             x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
-                            @persist:delete="hasDelete = true" class="flex gap-3 font-mono justify-between w-full">
-                            <!-- Command Preview -->
-                            <pre>$ hexdump <code aria-label="hexdump option" x-text="selected"></code></pre>
-                            <!-- Command Options -->
-                            <div>
-                                <div class="flex">
-                                    <label for="options" class="sr-only">Select options:</label>
-                                    <select id="options" x-model="selected" class="py-1 text-xs rounded">
-                                        <option value="-C">hex+ascii</option>
-                                        <option value="">hex</option>
-                                        <option value="--no-squeezing">nosqueeze</option>
-                                    </select>
-                                    <button @click="$persistDelete('selected')"
-                                        aria-label="Delete persisted selected command option from local storage"
-                                        type="button"
-                                        class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗</button>
+                            class="flex gap-3 font-mono justify-between w-full">
+                            <!-- See https://tailwindflex.com/@sienna/copy-code-block -->
+                            <code aria-label="shell command preview code" class="inline-flex space-x-4">
+                                <span class="shrink-0 text-zinc-500">$</span>
+                                <div class="flex gap-1">
+                                    <span>hexdump</span>
+                                    <output x-text="selected" aria-label="hexdump command option"
+                                        class="text-yellow-500"></output>
                                 </div>
-                                <div x-cloak x-show="hasDelete" role="alert" class="absolute bottom-12 text-rose-300">
-                                    Cleared option from storage!</div>
+                            </code>
+                            <div class="flex gap-1">
+                                <label for="options" class="sr-only">Select options:</label>
+                                <select id="options" x-model="selected" class="py-1 bg-zinc-800 text-xs rounded"
+                                    title="Select hexdump option">
+                                    <option value="-C">hex+ascii</option>
+                                    <option value="">hex</option>
+                                    <option value="--no-squeezing">nosqueeze</option>
+                                </select>
+                                <button @click="$persistDelete('selected')"
+                                    aria-label="Delete persisted selected command option from local storage"
+                                    type="button" title="Clear option from local storage"
+                                    class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗<span
+                                        class="sr-only">Clear option</span></button>
                             </div>
+                            <div x-cloak x-show="hasDelete" role="alert" class="absolute bottom-12 text-rose-300">
+                                Cleared option from local storage!</div>
                         </div>
                         <!-- ---------------------------------------------- -->
                     </form>
@@ -214,7 +231,7 @@
                                 <div
                                     class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
                                     <span class data-state="closed">
-                                        <button aria-label="Copy"
+                                        <button aria-label="Copy" title="Copy output"
                                             class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-1 px-1 mb-2 rounded hover:bg-zinc-700"
                                             onclick="copyOutput()" type="button"><svg width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"

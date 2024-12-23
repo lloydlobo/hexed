@@ -33,6 +33,10 @@
 find -name '*go' -or -name '*.html' | entr -crs "GOOS=js GOARCH=wasm go build -o main.wasm main.go; python -m http.server"
 ```
 
+## Thanks
+
+- <https://js.hyperui.dev/>
+
 ## Related
 
 - <https://binspec.org/>
