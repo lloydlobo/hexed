@@ -15,6 +15,7 @@
         <script defer src="https://unpkg.com/alpinejs-persist-extended@latest/dist/storage.min.js"></script>
         <!-- <script defer src="//unpkg.com/alpinejs"></script> -->
         <script defer src="https://unpkg.com/alpinejs@latest/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs-textarea-grow@latest/dist/grow.min.js"></script>
 
         <!-- Function declaration and implementations --------------------- -->
         <script>
@@ -142,6 +143,9 @@
                                             <option value="--no-squeezing">nosqueeze</option>
                                         </select>
                                     </div>
+                                <textarea x-data x-grow x-model="textareaInput" type="text" placeholder="Enter text..."
+                                    autofocus="" cols="80" rows="4" data-virtualkeyboard="true" id="input"
+                                    class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary font-mono placeholder:text-secondary"></textarea>
                                 </div>
                                 <!-- -------------------------------------- -->
 
