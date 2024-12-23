@@ -11,9 +11,12 @@
     <link href="css/style.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Scripts (CDN) (TODO hardcode version)-->
+    <!-- Scripts (CDN) -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.7/dist/cdn.min.js"></script>
+
+    <!-- (TODO hardcode version) -->
     <script defer src="https://unpkg.com/alpinejs-persist-extended@latest/dist/storage.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs-scroll-amount@latest/dist/scroll-amount.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs-textarea-grow@latest/dist/grow.min.js"></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js"></script>
@@ -108,8 +111,23 @@
             </nav>
         </div>
     </header>
-    <main
-        class="w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
+
+
+    <main class="
+            w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] 
+            text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]
+            ">
+        <!-- PAGE SCROLL PROGRESS ----------------------------------------- -->
+        <div x-data="{ scrollPos: {} }" x-init="scrollPos = $scrollAmount" @scroll.window="scrollPos = $scrollAmount">
+            <div x-cloak x-show="scrollPos.scrollPercent > 0" :style="{ width: `${scrollPos.scrollPercent}%` }"
+                class="z-30 fixed inset-x-0 top-0 h-1 bg-blue-600 transition-all"></div>
+            <div x-cloak x-transition x-show="scrollPos.atEnd" role="alert"
+                class="fixed inset-0 grid place-content-center bg-zinc-50/[4%] transition-all">
+                <span class="sr-only">End of file</span>
+            </div>
+        </div>
+        <!-- -------------------------------------------------------------- -->
+
         <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
             <div class="mx-auto gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
                 <!-- INPUT ------------------------------------------------ -->
@@ -192,7 +210,7 @@
                             class="absolute flex text-xs font-mono">stdout</header>
                         <!-- COPY BUTTON ---------------------------------- -->
                         <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
-                            <div class="absolute bottom-1 -right-1 flex h-9 items-center">
+                            <div class="absolute bottom-1 right-1 flex h-9 items-center">
                                 <div
                                     class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
                                     <span class data-state="closed">
@@ -212,11 +230,11 @@
                         <!-- ---------------------------------------------- -->
 
                         <!-- HEXDUMP OUTPUT ------------------------------- -->
-                        <code>
+                        <pre>
                             <output aria-live="Processed text to hex"
                                 class="overflow-x-auto text-sm block min-h-20 py-2 min-w-[78ch]" id="outputBytes"
                                 style="white-space:pre;"></output>
-                        </code>
+                        </pre>
                         <!-- ---------------------------------------------- -->
                 </section>
                 <!-- ------------------------------------------------------ -->
