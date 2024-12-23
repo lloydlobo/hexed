@@ -3,17 +3,24 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>hextxt</title>
+
         <link href="css/style.css" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
+
         <script src="wasm_exec.js"></script>
-        <script src="//unpkg.com/alpinejs" defer></script>
+
+        <script defer src="https://unpkg.com/@alpinejs/persist@latest/dist/cdn.min.js"></script>
+        <script defer src="https://unpkg.com/alpinejs-persist-extended@latest/dist/storage.min.js"></script>
+        <!-- <script defer src="//unpkg.com/alpinejs"></script> -->
+        <script defer src="https://unpkg.com/alpinejs@latest/dist/cdn.min.js"></script>
+
         <!-- Function declaration and implementations --------------------- -->
         <script>
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((res)=>{
             go.run(res.instance);
-            console.info("Wasm loaded successfully");
         }
         ).catch((err)=>{
                 console.error("Failed to load Wasm:", err);
@@ -57,7 +64,10 @@
          */
         function copyToClipboard(s) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(s).then(()=>console.log("Text copied successfully"), (err)=>console.error("Failed to copy text:", err), );
+                navigator.clipboard.writeText(s).then(
+                    ()=>{},
+                    (err)=>console.error("Failed to copy text:", err),
+                );
                 return;
             }
 
@@ -68,7 +78,6 @@
 
             try {
                 document.execCommand("copy");
-                console.log("Text copied successfully");
             } catch (err) {
                 console.error("Fallback copy failed:", err);
                 alert("Manual copy: " + s);
@@ -83,8 +92,30 @@
         <!-- -------------------------------------------------------------- -->
     </head>
     <body class="omni-theme">
+        <header class="bg-[var(--bg)] md:fixed md:left-0 md:right-0 md:top-0 md:z-30 md:h-[4rem]">
+            <div class="m-auto text-base py-[18px] md:pt-0 px-3 md:px-4 md:px-5 lg:px-4 xl:px-5">
+                <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
+                    <a href="/" class="font-semibold
+                        font-mono"><span>|</span><span
+                            class="hover:text-[#3d72d7]">hextxt</span><span>|</span></a>
+                    <div class="hidden items-center justify-end space-x-6 py-4 pr-6 text-zinc-800 md:flex">
+                        <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-gray-600"><svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>GitHub</title><path d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0"></path></svg></a>
 
-        <article class="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <style>
+        [hover-scrollbar] {
+            overflow-x: "visible";
+            overflow-y: hidden;
+        }
+        [hover-scrollbar]:hover {
+            overflow-y: auto;
+        }
+        </style>
+        <br>
+        <article class="w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
             <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
                 <div class="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
                     <!-- col-1 STUB: metadata gravatars etc... -->
@@ -92,20 +123,12 @@
 
                     <!-- col-2 MAIN: input+output -->
                     <div class="relative flex w-full min-w-0 flex-col">
-                        <section>
-                            <header>
-                                <h1 x-data="{ message: 'hextext' }"
-                                    x-text="message" class="font-mono
-                                    font-medium tracking-tighter"></h1>
-                            </header>
-                        </section>
-
                         <!-- INPUT ---------------------------------------- -->
                         <section>
-                            <form onsubmit="event.preventDefault(); callGo();" class="mt-8 space-y-5">
+                            <form onsubmit="event.preventDefault(); callGo();" class="space-y-5">
                                 <!-- OPTIONS ------------------------------ -->
                                 <div x-data="{ selected: '-C' }"
-                                    class="flex gap-3 text-xs font-mono justify-between w-full" 
+                                    class="flex gap-3 font-mono justify-between w-full" 
                                 >
                                     <pre>$ hexdump <code 
                                         aria-label="hexdump option" 
@@ -113,7 +136,7 @@
                                     ></code></pre>
                                     <div>
                                         <label for="options" class="sr-only">Select options</label>
-                                        <select id="options" x-model="selected">
+                                        <select id="options" x-model="selected" class="py-1 text-xs">
                                             <option value="-C">hex+ascii</option>
                                             <option value="">hex</option>
                                             <option value="--no-squeezing">nosqueeze</option>
@@ -131,30 +154,50 @@
                                         <div class="flex min-h-[48px] items-start pl-2!">
                                             <div class="min-w-0 max-w-full flex-1">
                                                 <div class="text-primary max-h-[45dvh] max-h-80 overflow-auto default-browser">
-                                                    <textarea autofocus=""
-                                                        class="block min-h-40 w-full py-1 px-2.5
-                                                        resize-none! border-0 bg-transparent px-0 py-2
-                                                        text-primary font-mono placeholder:text-secondary"
-                                                        cols="80"
-                                                        data-virtualkeyboard="true"
-                                                        id="input"
-                                                        placeholder="Enter text"
-                                                    ></textarea>
+                                                    <div
+                                                        x-data="{ textareaInput: $persist(''), hasDelete: !true }"
+                                                        x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 3000))"
+                                                        @persist:delete="hasDelete = true"
+                                                        class="space-y-2"
+                                                    >
+                                                        <div class="flex items-center! gap-2">
+                                                            <textarea type="text" x-model="textareaInput"
+                                                                placeholder="Enter text..." 
+                                                                autofocus=""
+                                                                class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary font-mono placeholder:text-secondary"
+                                                                cols="80"
+                                                                data-virtualkeyboard="true"
+                                                                id="input"
+                                                            ></textarea>
+                                                            <div class="grid space-between justify-between items-center px-2">
+                                                                <div x-data="{ submitCount: 0 }" class="flex relative gap-2 items-center" >
+                                                                    <button 
+                                                                        onclick="callGo()"
+                                                                        @click="submitCount++"
+                                                                        aria-label="Process text"
+                                                                        type="button"
+                                                                        type="submit"
+                                                                        class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-blue-500" 
+                                                                    >Dump</button>
+                                                                    <span x-text="submitCount" class="hidden absolute right-4 bottom-8 text-[.5rem]"></span>
+                                                                </div>
+                                                                <button
+                                                                    @click="$persistDelete('textareaInput')" 
+                                                                    aria-label="Delete persisted input from local storage" 
+                                                                    class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-blue-500" 
+                                                                    type="button"
+                                                                >Trash</button>
+                                                            </div>
+                                                        </div>
+                                                        <div x-cloak
+                                                            x-show="hasDelete"
+                                                            role="alert"
+                                                            class="p-2 text-rose-500"
+                                                        >Deleted from storage!</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div 
-                                        x-data="{ submitCount: 0 }"
-                                        class="flex gap-0 flex-col items-center font-bold text-xs absolute right-0 bottom-0"
-                                    >
-                                        <button 
-                                            type="submit"
-                                            @click="submitCount++"
-                                            aria-label="Process text" 
-                                            class="text-zinc-800 bg-zinc-50 h-8 w-8 rounded hover:text-zinc-600 rounded-full mx-[1.125rem] my-[.5rem] transition-colors" 
-                                        >Go</button>
-                                        <span x-text="submitCount" class="font-mono text-xs"></span>
                                     </div>
                                 </div>
                                 <!-- -------------------------------------- -->
@@ -172,11 +215,15 @@
                                     >Output</header>
 
                                     <!-- COPY BUTTON ---------------------- -->
-                                    <div class="sticky top-9 md:top-[5.75rem]">
+                                    <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
                                         <div class="absolute bottom-1 -right-1 flex h-9 items-center">
                                             <div class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
                                                 <span class data-state="closed">
-                                                    <button aria-label="Copy" class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-0 px-2 mb-2 rounded hover:bg-zinc-700" onclick="copyOutput()" type="button">
+                                                    <button 
+                                                        aria-label="Copy" 
+                                                        class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-0 px-2 mb-2 rounded hover:bg-zinc-700" onclick="copyOutput()" 
+                                                        type="button"
+                                                    >
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm scale-[.8]">
                                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path>
                                                         </svg>

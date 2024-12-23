@@ -1,5 +1,7 @@
 :root {
 	color-scheme: light dark;
+	--bg: light-dark(white, black);
+	--fg: light-dark(black, white);
 }
 
 body {}
@@ -10,8 +12,10 @@ button {
 }
 
 .omni-theme {
-	background: light-dark(white, black);
-	color: light-dark(black, white);
+	background: var(--bg, light-dark(white, black));
+	color: var(--fg, light-dark(black, white));
+	/* background: light-dark(white, black); */
+	/* color: light-dark(black, white); */
 }
 
 .centered {
