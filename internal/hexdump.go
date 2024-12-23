@@ -16,12 +16,22 @@ const (
 
 // Hexdump converts a string to its hexadecimal representation.
 func Hexdump(s string, opts []string) string {
-	out := chunkString(hex.EncodeToString([]byte(s)), hexChunkSep, hexChunkSize)
+	str := hex.EncodeToString([]byte(s))
+	out := chunkString(str, hexChunkSep, hexChunkSize)
+
 	if len(opts) == 0 {
+		if len(out) == 0 {
+			return "0a"
+		}
 		return out
 	}
+
 	switch cmd := opts[0]; cmd {
 	case "-C":
+		if len(out) == 0 {
+			return `00000000  0a                                                |.|`
+		}
+
 		size := 16
 		h := chunkHexBytes([]byte(out), size*(hexChunkSize+hexChunkSepLen))
 		c := Chunks{
