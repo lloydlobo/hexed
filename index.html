@@ -115,23 +115,7 @@
                 <!-- INPUT ------------------------------------------------ -->
                 <section>
                     <header class="sr-only">Input</header>
-                    <form onsubmit="event.preventDefault(); processInput();" class="space-y-5 mt-4">
-                        <!-- STICKY CONTROLS ------------------------------ -->
-                        <div x-data="{ selected: '-C' }" class="flex gap-3 font-mono justify-between w-full">
-                            <!-- Command Preview -->
-                            <pre>$ hexdump <code aria-label="hexdump option" x-text="selected"></code></pre>
-                            <!-- Command Options -->
-                            <div>
-                                <label for="options" class="sr-only">Select options</label>
-                                <select id="options" x-model="selected" class="py-1 text-xs rounded">
-                                    <option value="-C">hex+ascii</option>
-                                    <option value="">hex</option>
-                                    <option value="--no-squeezing">nosqueeze</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- ---------------------------------------------- -->
-
+                    <form onsubmit="event.preventDefault(); processInput();" class="space-y-5 mt-8">
                         <!-- EDITOR --------------------------------------- -->
                         <div x-data="{ textareaInput: $persist(''), hasDelete: !true }"
                             x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
@@ -139,32 +123,62 @@
                             class="relative w-full cursor-text rounded-xl bg-zinc-900 transition-colors contain-inline-size">
                             <!-- INPUT ------------------------------------ -->
                             <div
-                                class="max-h-[60dvh] h-auto overflow-auto default-browser flex gap-2 items-start text-primary">
+                                class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
+                                <header style="align-content:center; height:1.5rem; left:50%;"
+                                    class="-top-5 absolute flex text-xs font-mono">stdin</header>
                                 <textarea x-data x-grow x-model="textareaInput" type="text" placeholder="Enter text..."
-                                    autofocus="" cols="80" rows="4" data-virtualkeyboard="true" id="input"
-                                    class="block min-h-40 w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"></textarea>
+                                    autofocus="" cols="80" rows="5" data-virtualkeyboard="true" id="input"
+                                    class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"></textarea>
                             </div>
                             <!-- ------------------------------------------ -->
 
                             <!-- FORM CONTROLS ---------------------------- -->
-                            <div class="flex space-between justify-between items-center px-2 py-1 text-xs">
+                            <div class="flex space-between justify-between items-center px-2 py-1">
                                 <div x-data="{ submitCount: 0 }" class="flex relative gap-2 items-center">
                                     <button onclick="processInput()" @click="submitCount++" aria-label="Process text"
                                         type="button" type="submit"
-                                        class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-emerald-500">Dump</button>
+                                        class="text-lg flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-emerald-500">✓<span
+                                            class="sr-only">Process</span></button>
                                     <span x-text="submitCount"
                                         class="hidden absolute right-4 bottom-8 text-[.5rem]"></span>
                                 </div>
                                 <div class="relative grid">
                                     <button @click="$persistDelete('textareaInput')"
                                         aria-label="Delete persisted input from local storage" type="button"
-                                        class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">Trash</button>
+                                        class="text-sm flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗<span
+                                            class="sr-only">Trash</span></button>
                                     <div x-cloak x-show="hasDelete" role="alert"
-                                        class="absolute bottom-12 text-rose-300">
+                                        class="absolute bottom-12 right-1 text-rose-300">
                                         Deleted from storage!</div>
                                 </div>
                             </div>
                             <!-- ------------------------------------------ -->
+                        </div>
+                        <!-- ---------------------------------------------- -->
+
+                        <!-- STICKY CONTROLS ------------------------------ -->
+                        <div x-data="{ selected: $persist('-C'), hasDelete: !true }"
+                            x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
+                            @persist:delete="hasDelete = true" class="flex gap-3 font-mono justify-between w-full">
+                            <!-- Command Preview -->
+                            <pre>$ hexdump <code aria-label="hexdump option" x-text="selected"></code></pre>
+                            <!-- Command Options -->
+                            <div>
+                                <div class="flex">
+                                    <label for="options" class="sr-only">Select options:</label>
+                                    <select id="options" x-model="selected" class="py-1 text-xs rounded">
+                                        <option value="-C">hex+ascii</option>
+                                        <option value="">hex</option>
+                                        <option value="--no-squeezing">nosqueeze</option>
+                                    </select>
+                                    <button @click="$persistDelete('selected')"
+                                        aria-label="Delete persisted selected command option from local storage"
+                                        type="button"
+                                        class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗</button>
+                                </div>
+                                <div x-cloak x-show="hasDelete" role="alert" class="absolute bottom-12 text-rose-300">
+                                    Cleared option from storage!</div>
+                            </div>
                         </div>
                         <!-- ---------------------------------------------- -->
                     </form>
@@ -173,10 +187,9 @@
 
                 <!-- OUTPUT ----------------------------------------------- -->
                 <section>
-                    <header class="sr-only">Output</header>
                     <div style="border:.5px solid #111111;" class="relative mt-14 py-1 px-2.5 rounded-xl">
                         <header style="align-content:center; height:1.5rem; top:-.5rem; left:50%;"
-                            class="absolute flex text-xs font-mono">Output</header>
+                            class="absolute flex text-xs font-mono">stdout</header>
                         <!-- COPY BUTTON ---------------------------------- -->
                         <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
                             <div class="absolute bottom-1 -right-1 flex h-9 items-center">
@@ -184,14 +197,14 @@
                                     class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
                                     <span class data-state="closed">
                                         <button aria-label="Copy"
-                                            class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-0 px-2 mb-2 rounded hover:bg-zinc-700"
+                                            class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-1 px-1 mb-2 rounded hover:bg-zinc-700"
                                             onclick="copyOutput()" type="button"><svg width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="icon-sm scale-[.8]">
+                                                class="icon-sm scale-[.85]">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
                                                     fill="currentColor"></path>
-                                            </svg>Copy</button>
+                                            </svg><span class="sr-only">Copy</span></button>
                                     </span>
                                 </div>
                             </div>
