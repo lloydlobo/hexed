@@ -13,8 +13,12 @@
 - Copy the WebAssembly JavaScript support file from local Go installation:
 
   ```sh
+  cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" .
+  # or
   cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .
   ```
+
+  See <https://go.dev/wiki/WebAssembly> guide.
 
 - Final directory structure should look like:
 
