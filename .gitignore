@@ -7,3 +7,5 @@ make
 !cmd/make
 serve
 txt
+dist
+.github/workflows/deploy.yml.bak

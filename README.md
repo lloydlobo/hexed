@@ -30,12 +30,13 @@
 ## Develop
 
 ```sh
-find -name '*go' -or -name '*.html' | entr -crs "GOOS=js GOARCH=wasm go build -o main.wasm main.go; python -m http.server"
+find -name '*go' -or -name '*.html' -or -name '*.js' | entr -crs "GOOS=js GOARCH=wasm go build -o main.wasm main.go; python -m http.server"
 ```
 
 ## Thanks
 
 - <https://js.hyperui.dev/>
+- <https://www.penguinui.com/>
 
 ## Related
 

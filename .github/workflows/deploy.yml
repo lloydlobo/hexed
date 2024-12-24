@@ -28,7 +28,7 @@ jobs:
           cp css/ dist/
           cp js/ dist/
           cp $(go env GOROOT)/misc/wasm/wasm_exec.js dist/
-          GOOS=js GOARCH=wasm go build -o dist/main.wasm
+          GOOS=js GOARCH=wasm go build -o dist/main.wasm main.go
 
       # Step 4: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
