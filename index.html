@@ -31,8 +31,8 @@
         <div class="m-auto text-base py-[18px] md:pt-0 px-3 md:px-4 md:px-5 lg:px-4 xl:px-5">
             <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
                 <a href="/" class="font-semibold font-mono"><span class="hover:text-blue-500">hextxt</span></a>
-                <div class="hidden items-center justify-end space-x-6 py-4 pr-6 text-zinc-800 md:flex">
-                    <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-zinc-600"><svg
+                <div class="hidden items-center justify-end space-x-6 py-4 pr-6 text-neutral-800 md:flex">
+                    <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-neutral-600"><svg
                             class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <title>GitHub</title>
                             <path
@@ -50,7 +50,7 @@
             <div x-cloak x-show="scrollPos.scrollPercent > 0" :style="{ width: `${scrollPos.scrollPercent}%` }"
                 class="z-30 fixed inset-x-0 top-0 h-1 bg-blue-200 transition-all"></div>
             <div x-cloak x-transition x-show="scrollPos.atEnd" role="alert"
-                class="fixed inset-0 grid place-content-center bg-zinc-50/[4%] transition-all">
+                class="fixed inset-0 grid place-content-center bg-neutral-50/[4%] transition-all">
                 <span class="sr-only">End of file</span>
             </div>
         </div>
@@ -64,7 +64,7 @@
                         <div x-data="{ textareaInput: $persist(''), hasDelete: !true }"
                             x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
                             @persist:delete="hasDelete = true"
-                            class="relative w-full cursor-text rounded-xl bg-zinc-900 transition-colors contain-inline-size">
+                            class="w-full cursor-text rounded-md bg-neutral-900 transition-colors contain-inline-size">
                             <!-- INPUT ------------------------------------ -->
                             <div
                                 class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
@@ -78,36 +78,33 @@
 
                             <!-- FORM CONTROLS ---------------------------- -->
                             <div class="flex space-between justify-between items-center px-2 py-1">
-                                <div x-data="{ submitCount: 0 }" class="flex relative gap-2 items-center">
-                                    <button @click="submitCount++" aria-label="Process text" onclick="processInput()"
-                                        title="Process" type="submit"
-                                        class="text-lg flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-emerald-500">✓<span
-                                            class="sr-only">Process</span></button>
-                                    <span x-text="submitCount"
-                                        class="hidden absolute right-4 bottom-8 text-[.5rem]"></span>
+                                <div class="flex gap-2 items-center">
+                                    <button type="submit" @click="submitCount++" aria-label="process text"
+                                        onclick="processInput()" title="Process text"
+                                        class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-green-300 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-green-300 dark:focus-visible:outline-green-300">✓</button>
                                 </div>
-                                <div class="relative grid">
-                                    <button @click="$persistDelete('textareaInput')" type="button"
+                                <div class="grid">
+                                    <button type="button" @click="$persistDelete('textareaInput')"
                                         aria-label="Delete persisted input from local storage"
                                         title="Delete input from local storage"
-                                        class="text-sm flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗<span
-                                            class="sr-only">Trash</span></button>
-                                    <div x-cloak x-show="hasDelete" role="alert"
-                                        class="absolute bottom-12 right-1 text-rose-300">
-                                        Deleted from local storage!</div>
+                                        class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-red-500 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-red-500 dark:focus-visible:outline-red-500">✗</button>
                                 </div>
                             </div>
                             <!-- ------------------------------------------ -->
+                            <!-- toast -->
+                            <div x-cloak x-show="hasDelete" role="alert"
+                                class="absolute bottom-12 text-xs text-rose-300">
+                                Deleted from local storage!</div>
                         </div>
                         <!-- ---------------------------------------------- -->
 
                         <!-- STICKY CONTROLS ------------------------------ -->
                         <div x-data="{ selected: $persist('-C'), hasDelete: !true }" @persist:delete="hasDelete = true"
                             x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
-                            class="flex gap-3 font-mono justify-between w-full">
+                            class="flex gap-3 justify-between w-full mt-5">
                             <!-- See https://tailwindflex.com/@sienna/copy-code-block -->
                             <code aria-label="shell command preview code" class="inline-flex space-x-4">
-                                <span class="shrink-0 text-zinc-500">$</span>
+                                <span class="shrink-0 text-neutral-500">$</span>
                                 <div class="flex gap-1">
                                     <span>hexdump</span>
                                     <output x-text="selected" aria-label="hexdump command option"
@@ -116,21 +113,23 @@
                             </code>
                             <div class="flex gap-1">
                                 <label for="options" class="sr-only">Select options:</label>
-                                <select id="options" x-model="selected" class="py-1 bg-zinc-800 text-xs rounded"
+                                <select id="options" x-model="selected" class="py-1 bg-neutral-800 text-xs rounded"
                                     title="Select hexdump option">
                                     <option value="-C">hex+ascii</option>
                                     <option value="">hex</option>
                                     <!-- Don't replace duplicate lines with '*': -->
                                     <!--<option value="--no-squeezing">nosqueeze</option>-->
                                 </select>
-                                <button @click="$persistDelete('selected')"
-                                    aria-label="Delete persisted selected command option from local storage"
-                                    type="button" title="Clear option from local storage"
-                                    class="flex gap-1 items-center leading-6 font-medium py-0 px-2 rounded hover:bg-zinc-800 text-rose-300">✗<span
-                                        class="sr-only">Clear option</span></button>
+                                <button type="button" @click="$persistDelete('selected')"
+                                    aria-label="Delete persisted selected command option from localStorage"
+                                    title="Clear option from localStorage"
+                                    class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-red-500 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-red-500 dark:focus-visible:outline-red-500">✗</button>
                             </div>
-                            <div x-cloak x-show="hasDelete" role="alert" class="absolute bottom-12 text-rose-300">
-                                Cleared option from local storage!</div>
+                            <!-- toast -->
+                            <div x-cloak x-show="hasDelete" role="alert"
+                                class="absolute bottom-12 text-xs text-rose-300">
+                                Cleared option from local storage!
+                            </div>
                         </div>
                         <!-- ---------------------------------------------- -->
                     </form>
@@ -139,7 +138,7 @@
 
                 <!-- OUTPUT ----------------------------------------------- -->
                 <section>
-                    <div style="border:.5px solid #111111;" class="relative mt-14 py-1 px-2.5 rounded-xl">
+                    <div style="border:.5px solid #111111;" class="relative mt-14 py-1 px-2.5 rounded-md">
                         <header style="align-content:center; height:1.5rem; top:-.5rem; left:50%;"
                             class="absolute flex text-xs font-mono">stdout</header>
                         <!-- COPY BUTTON ---------------------------------- -->
@@ -149,7 +148,7 @@
                                     class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
                                     <span class data-state="closed">
                                         <button aria-label="Copy" title="Copy output"
-                                            class="flex gap-1 items-center bg-zinc-900 text-white text-xs leading-6 font-medium py-1 px-1 mb-2 rounded hover:bg-zinc-700"
+                                            class="flex gap-1 items-center bg-neutral-900 text-white text-xs leading-6 font-medium py-1 px-1 mb-2 rounded hover:bg-neutral-700"
                                             onclick="copyOutput()" type="button"><svg width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                                 class="icon-sm scale-[.85]">
@@ -167,7 +166,20 @@
                         <pre>
                             <output aria-live="Processed text to hex"
                                 class="overflow-x-auto text-sm block min-h-20 py-2 min-w-[78ch]" id="outputBytes"
-                                style="white-space:pre;"></output>
+                                style="white-space:pre;">
+                                <!-- Loading/Empty Skeleton -->
+                                <div class="hidden flex w-full flex-col gap-2">
+                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
+                                        aria-hidden="true"></div>
+                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
+                                        aria-hidden="true"></div>
+                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
+                                        aria-hidden="true"></div>
+                                    <div class="h-3.5 w-1/2 animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
+                                        aria-hidden="true"></div>
+                                    <span class="sr-only">loading</span>
+                                </div>
+                            </output>
                         </pre>
                         <!-- ---------------------------------------------- -->
                 </section>
