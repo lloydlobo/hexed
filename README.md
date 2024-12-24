@@ -1,5 +1,7 @@
 # hextxt
 
+[![Deploy Pages](https://github.com/lloydlobo/hextxt/actions/workflows/static.yml/badge.svg)](https://github.com/lloydlobo/hextxt/actions/workflows/static.yml)
+
 ![preview](./static/preview.png)
 
 ## Build
