@@ -24,13 +24,17 @@
   <!-- Scripts (Local) -->
   <script src="wasm_exec.js"></script>
   <script defer src="js/main.js"></script>
+
+  <!--  set the base URL for all relative links:-->
+  <!--    <base href="/" id="base-tag">-->
+  <base x-bind:href="window.location.hostname === `localhost` ? `/` : `/hexed/`">
 </head>
 
 <body class="omni-theme">
 <header class="bg-[var(--bg)] md:fixed md:left-0 md:right-0 md:top-0 md:z-30">
   <div class="m-auto px-3 text-base py-[9px] md:py-[18px] md:px-4 md:px-5 md:pt-0 lg:px-4 xl:px-5">
     <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
-      <a class="font-mono font-semibold" href="/hexed">he<span class="text-lg text-blue-300">x</span>ed</a>
+      <a class="font-mono font-semibold" href="/">he<span class="text-lg text-blue-300">x</span>ed</a>
       <div class="hidden items-center justify-end py-4 pr-6 text-neutral-800 space-x-6 md:flex">
         <a class="block hover:text-neutral-600" href="https://github.com/lloydlobo/hexed">
           <svg
@@ -125,7 +129,7 @@
                    x-data="{ currentURL: window.location.href.replace('http://', '').replace('https://', '').slice(0, -1) }">
                 <button @click="$persistDelete('textareaInput')"
                         aria-describedby="tooltipDeleteTextareaInput"
-                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-red-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-red-500 dark:text-white dark:focus-visible:outline-white"
                         type="button">
                   <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
                        xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +151,7 @@
             <!-- ------------------------------------------ -->
 
             <!-- toast -->
-            <div class="absolute bottom-12 text-xs text-rose-300" role="alert" x-cloak x-show="hasDelete">
+            <div class="absolute bottom-12 text-xs text-red-300" role="alert" x-cloak x-show="hasDelete">
               Deleted from local storage!
             </div>
 
@@ -186,7 +190,7 @@
                 <button @click="$persistDelete('selected')"
                         aria-describedby="tooltipDeleteSelectedOption"
                         aria-label="Delete persisted selected command option from localStorage"
-                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-red-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-red-500 dark:text-white dark:focus-visible:outline-white"
                         type="button">
                   <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
                        xmlns="http://www.w3.org/2000/svg">
@@ -206,7 +210,7 @@
               </div>
             </div>
             <!-- toast -->
-            <div class="absolute bottom-12 text-xs text-rose-300" role="alert" x-cloak
+            <div class="absolute bottom-12 text-xs text-red-300" role="alert" x-cloak
                  x-show="hasDelete">
               Cleared option from local storage!
             </div>
@@ -250,7 +254,7 @@
                   </svg>
                 </button>
                 <div
-                  class="absolute top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                  class="absolute top-10 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
                   id="tooltipCopyOutput"
                   role="tooltip">
                   Copy output
@@ -265,9 +269,8 @@
             <pre>
               <output
                 aria-label="Processed text to hex"
-                class="text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
+                class="text-wrap text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
                 id="outputBytes"
-                style="white-space:pre;"
               ></output>
             </pre>
             <!-- Loading/Empty Skeleton -->
