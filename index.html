@@ -1,196 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <title>hextxt</title>
+  <title>hexed</title>
 
-    <!-- Styles -->
-    <link href="css/style.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Styles -->
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Scripts (CDN) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.7/dist/cdn.min.js"></script>
+  <!-- Scripts (CDN) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.7/dist/cdn.min.js"></script>
 
-    <!-- (TODO hardcode version) -->
-    <script defer src="https://unpkg.com/alpinejs-persist-extended@latest/dist/storage.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs-scroll-amount@latest/dist/scroll-amount.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs-textarea-grow@latest/dist/grow.min.js"></script>
+  <!-- (TODO hardcode version) -->
+  <script defer src="https://unpkg.com/alpinejs-persist-extended@latest/dist/storage.min.js"></script>
+  <script defer src="https://unpkg.com/alpinejs-scroll-amount@latest/dist/scroll-amount.min.js"></script>
+  <script defer src="https://unpkg.com/alpinejs-textarea-grow@latest/dist/grow.min.js"></script>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js"></script>
 
-    <!-- Scripts (Local) -->
-    <script src="wasm_exec.js"></script>
-    <script defer src="js/main.js"></script>
+  <!-- Scripts (Local) -->
+  <script src="wasm_exec.js"></script>
+  <script defer src="js/main.js"></script>
 </head>
 
 <body class="omni-theme">
-    <header class="bg-[var(--bg)] md:fixed md:left-0 md:right-0 md:top-0 md:z-30">
-        <div class="m-auto text-base py-[18px] md:pt-0 px-3 md:px-4 md:px-5 lg:px-4 xl:px-5">
-            <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
-                <a href="/hextxt" class="font-semibold font-mono"><span class="hover:text-blue-500">hextxt</span></a>
-                <div class="hidden items-center justify-end space-x-6 py-4 pr-6 text-neutral-800 md:flex">
-                    <a href="https://github.com/lloydlobo/hextxt" class="block hover:text-neutral-600"><svg
-                            class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <title>GitHub</title>
-                            <path
-                                d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0">
-                            </path>
-                        </svg></a>
-                </div>
-            </nav>
-        </div>
-    </header>
-    <main class="w-full mt-12 scroll-mb-[var(--thread-trailing-height,150px)] 
-            text-token-text-primary focus-visible:outline-2 
+<header class="bg-[var(--bg)] md:fixed md:left-0 md:right-0 md:top-0 md:z-30">
+  <div class="m-auto px-3 text-base py-[9px] md:py-[18px] md:px-4 md:px-5 md:pt-0 lg:px-4 xl:px-5">
+    <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
+      <a class="font-mono font-semibold" href="/hexed">he<span class="text-lg text-blue-300">x</span>ed</a>
+      <div class="hidden items-center justify-end py-4 pr-6 text-neutral-800 space-x-6 md:flex">
+        <a class="block hover:text-neutral-600" href="https://github.com/lloydlobo/hexed">
+          <svg
+                  class="h-5 w-5 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <title>GitHub</title>
+            <path
+                    d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0">
+            </path>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+<main class="w-full mt-0 md:mt-12 scroll-mb-[var(--thread-trailing-height,150px)]
+            text-token-text-primary focus-visible:outline-2
             focus-visible:outline-offset-[-4px]">
-        <div x-data="{ scrollPos: {} }" x-init="scrollPos = $scrollAmount" @scroll.window="scrollPos = $scrollAmount">
-            <div x-cloak x-show="scrollPos.scrollPercent > 0" :style="{ width: `${scrollPos.scrollPercent}%` }"
-                class="z-30 fixed inset-x-0 top-0 h-1 bg-blue-200 transition-all"></div>
-            <div x-cloak x-transition x-show="scrollPos.atEnd" role="alert"
-                class="fixed inset-0 grid place-content-center bg-neutral-50/[4%] transition-all">
-                <span class="sr-only">End of file</span>
+  <div @scroll.window="scrollPos = $scrollAmount" x-data="{ scrollPos: {} }" x-init="scrollPos = $scrollAmount">
+    <div :style="{ width: `${scrollPos.scrollPercent}%` }"
+         class="fixed inset-x-0 top-0 z-30 h-1 bg-blue-200 transition-all" x-cloak
+         x-show="scrollPos.scrollPercent > 0"></div>
+    <div class="fixed inset-0 grid place-content-center transition-all bg-neutral-50/[4%]" role="alert" x-cloak
+         x-show="scrollPos.atEnd"
+         x-transition>
+      <span class="sr-only">End of file</span>
+    </div>
+  </div>
+  <div class="m-auto w-full px-3 text-base md:py-[18px] md:px-4 md:px-5 lg:px-4 xl:px-5">
+    <div class="mx-auto gap-4 text-base md:max-w-3xl md:gap-5 lg:gap-6">
+      <!-- INPUT ------------------------------------------------ -->
+      <section>
+        <header class="sr-only">Input</header>
+        <form class="mt-8 space-y-5" onsubmit="event.preventDefault(); processInput();">
+          <!-- EDITOR --------------------------------------- -->
+          <div @persist:delete="hasDelete = true"
+               class="w-full cursor-text rounded-md bg-neutral-900 transition-colors contain-inline-size"
+               x-data="{ textareaInput: $persist(''), hasDelete: !true }"
+               x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))">
+            <!-- INPUT ------------------------------------ -->
+            <div class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
+              <label class="absolute -top-5 flex font-mono text-xs"
+                     for="input"
+                     style="align-content:center; height:1.5rem; left:50%;"><abbr title="Standard Input">stdin</abbr>
+              </label>
+              <textarea
+                      autofocus=""
+                      class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"
+                      cols="80"
+                      data-virtualkeyboard="true"
+                      id="input"
+                      placeholder="Enter text..."
+                      rows="11"
+                      type="text"
+                      x-data
+                      x-grow
+                      x-model="textareaInput"
+              ></textarea>
             </div>
-        </div>
-        <div class="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5">
-            <div class="mx-auto gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
-                <!-- INPUT ------------------------------------------------ -->
-                <section>
-                    <header class="sr-only">Input</header>
-                    <form onsubmit="event.preventDefault(); processInput();" class="space-y-5 mt-8">
-                        <!-- EDITOR --------------------------------------- -->
-                        <div x-data="{ textareaInput: $persist(''), hasDelete: !true }"
-                            x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
-                            @persist:delete="hasDelete = true"
-                            class="w-full cursor-text rounded-md bg-neutral-900 transition-colors contain-inline-size">
-                            <!-- INPUT ------------------------------------ -->
-                            <div
-                                class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
-                                <header style="align-content:center; height:1.5rem; left:50%;"
-                                    class="-top-5 absolute flex text-xs font-mono">stdin</header>
-                                <textarea x-data x-grow x-model="textareaInput" cols="80" data-virtualkeyboard="true"
-                                    id="input" placeholder="Enter text..." rows="11" type="text" autofocus=""
-                                    class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"></textarea>
-                            </div>
-                            <!-- ------------------------------------------ -->
+            <!-- ------------------------------------------ -->
 
-                            <!-- FORM CONTROLS ---------------------------- -->
-                            <div class="flex space-between justify-between items-center px-2 py-1">
-                                <div class="flex gap-2 items-center">
-                                    <button type="submit" @click="submitCount++" aria-label="process text"
-                                        onclick="processInput()" title="Process text"
-                                        class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-green-300 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-green-300 dark:focus-visible:outline-green-300">✓</button>
-                                </div>
-                                <div class="grid">
-                                    <button type="button" @click="$persistDelete('textareaInput')"
-                                        aria-label="Delete persisted input from local storage"
-                                        title="Delete input from local storage"
-                                        class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-red-500 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-red-500 dark:focus-visible:outline-red-500">✗</button>
-                                </div>
-                            </div>
-                            <!-- ------------------------------------------ -->
-                            <!-- toast -->
-                            <div x-cloak x-show="hasDelete" role="alert"
-                                class="absolute bottom-12 text-xs text-rose-300">
-                                Deleted from local storage!</div>
-                        </div>
-                        <!-- ---------------------------------------------- -->
+            <!-- FORM CONTROLS ---------------------------- -->
+            <div class="flex items-center justify-between px-2 py-1 space-between">
+              <div class="relative">
+                <button _class="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-md bg-black px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75 dark:bg-white dark:text-black dark:focus-visible:outline-white"
+                        aria-describedby="buttonSubmitTextareaInput"
+                        aria-label="process text"
+                        class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-black px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:focus-visible:outline-white"
+                        title="Process text"
+                        type="submit">
+                  <svg class="h-6 w-6 shrink-0" fill="none" height="32" viewBox="0 0 32 32" width="32"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                          d="M15.1918 8.90615C15.6381 8.45983 16.3618 8.45983 16.8081 8.90615L21.9509 14.049C22.3972 14.4953 22.3972 15.2189 21.9509 15.6652C21.5046 16.1116 20.781 16.1116 20.3347 15.6652L17.1428 12.4734V22.2857C17.1428 22.9169 16.6311 23.4286 15.9999 23.4286C15.3688 23.4286 14.8571 22.9169 14.8571 22.2857V12.4734L11.6652 15.6652C11.2189 16.1116 10.4953 16.1116 10.049 15.6652C9.60265 15.2189 9.60265 14.4953 10.049 14.049L15.1918 8.90615Z"
+                          fill="currentColor"
+                          fill-rule="evenodd"></path>
+                  </svg>
+                  Generate
+                </button>
+                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                     id="buttonSubmitTextareaInput"
+                     role="tooltip"
+                >Hexdump input
+                </div>
+              </div>
 
-                        <!-- STICKY CONTROLS ------------------------------ -->
-                        <div x-data="{ selected: $persist('-C'), hasDelete: !true }" @persist:delete="hasDelete = true"
-                            x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
-                            class="flex gap-3 justify-between w-full mt-5">
-                            <!-- See https://tailwindflex.com/@sienna/copy-code-block -->
-                            <code aria-label="shell command preview code" class="inline-flex space-x-4">
-                                <span class="shrink-0 text-neutral-500">$</span>
-                                <div class="flex gap-1">
-                                    <span>hexdump</span>
-                                    <output x-text="selected" aria-label="hexdump command option"
-                                        class="text-yellow-500"></output>
-                                </div>
-                            </code>
-                            <div class="flex gap-1">
-                                <label for="options" class="sr-only">Select options:</label>
-                                <select id="options" x-model="selected" class="py-1 bg-neutral-800 text-xs rounded"
-                                    title="Select hexdump option">
-                                    <option value="-C">hex+ascii</option>
-                                    <option value="">hex</option>
-                                    <!-- Don't replace duplicate lines with '*': -->
-                                    <!--<option value="--no-squeezing">nosqueeze</option>-->
-                                </select>
-                                <button type="button" @click="$persistDelete('selected')"
-                                    aria-label="Delete persisted selected command option from localStorage"
-                                    title="Clear option from localStorage"
-                                    class="cursor-pointer whitespace-nowrap bg-transparent rounded-none px-4 py-2 text-sm font-medium tracking-wide text-red-500 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:text-red-500 dark:focus-visible:outline-red-500">✗</button>
-                            </div>
-                            <!-- toast -->
-                            <div x-cloak x-show="hasDelete" role="alert"
-                                class="absolute bottom-12 text-xs text-rose-300">
-                                Cleared option from local storage!
-                            </div>
-                        </div>
-                        <!-- ---------------------------------------------- -->
-                    </form>
-                </section>
-                <!-- ------------------------------------------------------ -->
-
-                <!-- OUTPUT ----------------------------------------------- -->
-                <section>
-                    <div style="border:.5px solid #111111;" class="relative mt-14 py-1 px-2.5 rounded-md">
-                        <header style="align-content:center; height:1.5rem; top:-.5rem; left:50%;"
-                            class="absolute flex text-xs font-mono">stdout</header>
-                        <!-- COPY BUTTON ---------------------------------- -->
-                        <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
-                            <div class="absolute bottom-1 right-1 flex h-9 items-center">
-                                <div
-                                    class="flex items-center rounded bg-token-sidebar-surface-primary px-0 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary">
-                                    <span class data-state="closed">
-                                        <button aria-label="Copy" title="Copy output"
-                                            class="flex gap-1 items-center bg-neutral-900 text-white text-xs leading-6 font-medium py-1 px-1 mb-2 rounded hover:bg-neutral-700"
-                                            onclick="copyOutput()" type="button"><svg width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="icon-sm scale-[.85]">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
-                                                    fill="currentColor"></path>
-                                            </svg><span class="sr-only">Copy</span></button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ---------------------------------------------- -->
-
-                        <!-- HEXDUMP OUTPUT ------------------------------- -->
-                        <pre>
-                            <output aria-live="Processed text to hex"
-                                class="overflow-x-auto text-sm block min-h-20 py-2 min-w-[78ch]" id="outputBytes"
-                                style="white-space:pre;">
-                                <!-- Loading/Empty Skeleton -->
-                                <div class="hidden flex w-full flex-col gap-2">
-                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
-                                        aria-hidden="true"></div>
-                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
-                                        aria-hidden="true"></div>
-                                    <div class="h-3.5 w-full animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
-                                        aria-hidden="true"></div>
-                                    <div class="h-3.5 w-1/2 animate-pulse rounded-md bg-neutral-50 dark:bg-neutral-900"
-                                        aria-hidden="true"></div>
-                                    <span class="sr-only">loading</span>
-                                </div>
-                            </output>
-                        </pre>
-                        <!-- ---------------------------------------------- -->
-                </section>
-                <!-- ------------------------------------------------------ -->
+              <div class="relative"
+                   x-data="{ currentURL: window.location.href.replace('http://', '').replace('https://', '').slice(0, -1) }">
+                <button @click="$persistDelete('textareaInput')"
+                        aria-describedby="tooltipDeleteTextareaInput"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        type="button">
+                  <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                          d="M10.5555 4C10.099 4 9.70052 4.30906 9.58693 4.75114L9.29382 5.8919H14.715L14.4219 4.75114C14.3083 4.30906 13.9098 4 13.4533 4H10.5555ZM16.7799 5.8919L16.3589 4.25342C16.0182 2.92719 14.8226 2 13.4533 2H10.5555C9.18616 2 7.99062 2.92719 7.64985 4.25342L7.22886 5.8919H4C3.44772 5.8919 3 6.33961 3 6.8919C3 7.44418 3.44772 7.8919 4 7.8919H4.10069L5.31544 19.3172C5.47763 20.8427 6.76455 22 8.29863 22H15.7014C17.2354 22 18.5224 20.8427 18.6846 19.3172L19.8993 7.8919H20C20.5523 7.8919 21 7.44418 21 6.8919C21 6.33961 20.5523 5.8919 20 5.8919H16.7799ZM17.888 7.8919H6.11196L7.30423 19.1057C7.3583 19.6142 7.78727 20 8.29863 20H15.7014C16.2127 20 16.6417 19.6142 16.6958 19.1057L17.888 7.8919ZM10 10C10.5523 10 11 10.4477 11 11V16C11 16.5523 10.5523 17 10 17C9.44772 17 9 16.5523 9 16V11C9 10.4477 9.44772 10 10 10ZM14 10C14.5523 10 15 10.4477 15 11V16C15 16.5523 14.5523 17 14 17C13.4477 17 13 16.5523 13 16V11C13 10.4477 13.4477 10 14 10Z"
+                          fill="currentColor"
+                          fill-rule="evenodd"></path>
+                  </svg>
+                  <span class="sr-only">Delete</span>
+                </button>
+                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                     id="tooltipDeleteTextareaInput"
+                     role="tooltip">
+                  Delete saved input for <span x-text="currentURL"></span>
+                </div>
+              </div>
             </div>
+            <!-- ------------------------------------------ -->
+
+            <!-- toast -->
+            <div class="absolute bottom-12 text-xs text-rose-300" role="alert" x-cloak x-show="hasDelete">
+              Deleted from local storage!
+            </div>
+
+          </div>
+          <!-- ---------------------------------------------- -->
+
+          <!-- STICKY CONTROLS ------------------------------ -->
+          <div @persist:delete="hasDelete = true"
+               class="mt-5 flex w-full justify-between gap-3"
+               x-data="{ selected: $persist('-C'), hasDelete: !true }"
+               x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))"
+          >
+            <!-- See https://tailwindflex.com/@sienna/copy-code-block -->
+            <code aria-label="shell command preview code" class="inline-flex space-x-4">
+              <span class="shrink-0 text-neutral-500">$</span>
+              <div class="flex gap-1">
+                <span>hexdump</span>
+                <output aria-label="hexdump command option"
+                        class="text-yellow-500"
+                        x-text="selected"></output>
+              </div>
+            </code>
+
+            <div class="flex gap-1">
+              <label class="sr-only" for="idSelectOption">Select options:</label>
+              <select class="rounded bg-neutral-800 py-1 text-xs" id="idSelectOption" title="Select hexdump option"
+                      x-model="selected">
+                <option value="-C">hex+ascii</option>
+                <option value="">hex</option>
+              </select>
+
+              <div class="relative"
+                   x-data="{ currentURL: window.location.href.replace('http://', '').replace('https://', '').slice(0, -1) }">
+                <button @click="$persistDelete('selected')"
+                        aria-describedby="tooltipDeleteSelectedOption"
+                        aria-label="Delete persisted selected command option from localStorage"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        type="button">
+                  <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                          d="M10.5555 4C10.099 4 9.70052 4.30906 9.58693 4.75114L9.29382 5.8919H14.715L14.4219 4.75114C14.3083 4.30906 13.9098 4 13.4533 4H10.5555ZM16.7799 5.8919L16.3589 4.25342C16.0182 2.92719 14.8226 2 13.4533 2H10.5555C9.18616 2 7.99062 2.92719 7.64985 4.25342L7.22886 5.8919H4C3.44772 5.8919 3 6.33961 3 6.8919C3 7.44418 3.44772 7.8919 4 7.8919H4.10069L5.31544 19.3172C5.47763 20.8427 6.76455 22 8.29863 22H15.7014C17.2354 22 18.5224 20.8427 18.6846 19.3172L19.8993 7.8919H20C20.5523 7.8919 21 7.44418 21 6.8919C21 6.33961 20.5523 5.8919 20 5.8919H16.7799ZM17.888 7.8919H6.11196L7.30423 19.1057C7.3583 19.6142 7.78727 20 8.29863 20H15.7014C16.2127 20 16.6417 19.6142 16.6958 19.1057L17.888 7.8919ZM10 10C10.5523 10 11 10.4477 11 11V16C11 16.5523 10.5523 17 10 17C9.44772 17 9 16.5523 9 16V11C9 10.4477 9.44772 10 10 10ZM14 10C14.5523 10 15 10.4477 15 11V16C15 16.5523 14.5523 17 14 17C13.4477 17 13 16.5523 13 16V11C13 10.4477 13.4477 10 14 10Z"
+                          fill="currentColor"
+                          fill-rule="evenodd"></path>
+                  </svg>
+                  <span class="sr-only">Delete</span>
+                </button>
+                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                     id="tooltipDeleteSelectedOption"
+                     role="tooltip">
+                  Delete saved option for <span x-text="currentURL"></span>
+                </div>
+              </div>
+            </div>
+            <!-- toast -->
+            <div class="absolute bottom-12 text-xs text-rose-300" role="alert" x-cloak
+                 x-show="hasDelete">
+              Cleared option from local storage!
+            </div>
+          </div>
+          <!-- ---------------------------------------------- -->
+        </form>
+      </section>
+      <!-- ------------------------------------------------------ -->
+
+      <!-- OUTPUT ----------------------------------------------- -->
+      <section>
+        <div class="relative mt-14 rounded-md py-1 px-2.5" style="border:1px solid #111111;">
+          <header class="absolute flex font-mono text-xs"
+                  style="align-content:center; height:1.5rem; top:-.5rem; left:50%;">
+            <abbr title="Standard Output">stdout</abbr>
+          </header>
+          <!-- COPY BUTTON ---------------------------------- -->
+          <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
+            <div class="absolute right-1 bottom-1 flex h-9 items-center">
+              <div class="flex items-center rounded px-0 font-sans text-xs bg-token-sidebar-surface-primary text-token-text-secondary dark:bg-token-main-surface-secondary"
+              >
+                <span class data-state="closed">
+                  <button aria-label="Copy"
+                          class="mb-2 flex items-center gap-1 rounded bg-neutral-900 px-1 py-1 text-xs font-medium leading-6 text-white hover:bg-neutral-700"
+                          onclick="copyOutput()"
+                          title="Copy output" type="button">
+                    <svg class="icon-sm scale-[.85]" fill="none" height="24" viewBox="0 0 24 24" width="24"
+                         xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd"
+                                  d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                                  fill="currentColor"
+                                  fill-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Copy</span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- ---------------------------------------------- -->
+
+          <!-- HEXDUMP OUTPUT ------------------------------- -->
+          <div class="overflow-x-auto">
+            <pre>
+              <output aria-label="Processed text to hex"
+                      class="text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
+                      id="outputBytes"
+                      style="white-space:pre;"
+              ></output>
+            </pre>
+            <!-- Loading/Empty Skeleton -->
+            <div class="flex hidden w-full flex-col gap-2">
+              <div aria-hidden="true"
+                   class="w-full animate-pulse rounded-md bg-neutral-50 h-3.5 dark:bg-neutral-900"></div>
+              <div aria-hidden="true"
+                   class="w-full animate-pulse rounded-md bg-neutral-50 h-3.5 dark:bg-neutral-900"></div>
+              <div aria-hidden="true"
+                   class="w-full animate-pulse rounded-md bg-neutral-50 h-3.5 dark:bg-neutral-900"></div>
+              <div aria-hidden="true"
+                   class="w-1/2 animate-pulse rounded-md bg-neutral-50 h-3.5 dark:bg-neutral-900"></div>
+              <span class="sr-only">loading</span>
+            </div>
+          </div>
+          <!-- ---------------------------------------------- -->
         </div>
-    </main>
-    <footer
-        class="sr-only fixed bottom-0 left-0 right-0 flex justify-center items-center space-x-2 py-2 text-sm text-center font-mono">
-        <p>&copy; 2024</p>
-    </footer>
+      </section>
+      <!-- ------------------------------------------------------ -->
+    </div>
+  </div>
+</main>
+<footer class="sr-only fixed right-0 bottom-0 left-0 flex items-center justify-center py-2 text-center font-mono text-sm space-x-2">
+  <p>&copy; 2024</p>
+</footer>
 </body>
 
 </html>
