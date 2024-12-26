@@ -34,10 +34,10 @@
       <div class="hidden items-center justify-end py-4 pr-6 text-neutral-800 space-x-6 md:flex">
         <a class="block hover:text-neutral-600" href="https://github.com/lloydlobo/hexed">
           <svg
-                  class="h-5 w-5 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            class="h-5 w-5 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <title>GitHub</title>
             <path
-                    d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0">
+              d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0">
             </path>
           </svg>
         </a>
@@ -67,7 +67,10 @@
           <!-- EDITOR --------------------------------------- -->
           <div @persist:delete="hasDelete = true"
                class="w-full cursor-text rounded-md bg-neutral-900 transition-colors contain-inline-size"
-               x-data="{ textareaInput: $persist(''), hasDelete: !true }"
+               x-data='{
+                 textareaInput: $persist(`package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, 世界")\n}\n`),
+                 hasDelete: !true,
+               }'
                x-init="$watch('hasDelete', () => setTimeout(() => (hasDelete = !true), 1500))">
             <!-- INPUT ------------------------------------ -->
             <div class="relative h-auto overflow-auto! default-browser flex gap-2 items-start text-primary">
@@ -76,30 +79,31 @@
                      style="align-content:center; height:1.5rem; left:50%;"><abbr title="Standard Input">stdin</abbr>
               </label>
               <textarea
-                      autofocus=""
-                      class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"
-                      cols="80"
-                      data-virtualkeyboard="true"
-                      id="input"
-                      placeholder="Enter text..."
-                      rows="11"
-                      type="text"
-                      x-data
-                      x-grow
-                      x-model="textareaInput"
+                autofocus=""
+                class="block max-h-[50dvh] min-h-40! w-full py-1 px-2.5 resize-none! border-0 bg-transparent px-0 py-2 text-primary text-xs font-mono placeholder:text-secondary"
+                cols="80"
+                data-virtualkeyboard="true"
+                id="input"
+                placeholder="Enter text..."
+                rows="11"
+                type="text"
+                x-data
+                x-grow
+                x-model="textareaInput"
               ></textarea>
             </div>
             <!-- ------------------------------------------ -->
 
             <!-- FORM CONTROLS ---------------------------- -->
-            <div class="flex items-center justify-between px-2 py-1 space-between">
+            <div class="flex items-center justify-between px-2 pt-2 pb-3 space-between">
               <div class="relative">
-                <button _class="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-md bg-black px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75 dark:bg-white dark:text-black dark:focus-visible:outline-white"
-                        aria-describedby="buttonSubmitTextareaInput"
-                        aria-label="process text"
-                        class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-black px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:focus-visible:outline-white"
-                        title="Process text"
-                        type="submit">
+                <button
+                  _class="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-md bg-black px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75 dark:bg-white dark:text-black dark:focus-visible:outline-white"
+                  aria-describedby="buttonSubmitTextareaInput"
+                  aria-label="process text"
+                  class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-black px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:focus-visible:outline-white"
+                  title="Process text"
+                  type="submit">
                   <svg class="h-6 w-6 shrink-0" fill="none" height="32" viewBox="0 0 32 32" width="32"
                        xmlns="http://www.w3.org/2000/svg">
                     <path clip-rule="evenodd"
@@ -109,9 +113,10 @@
                   </svg>
                   Generate
                 </button>
-                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
-                     id="buttonSubmitTextareaInput"
-                     role="tooltip"
+                <div
+                  class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                  id="buttonSubmitTextareaInput"
+                  role="tooltip"
                 >Hexdump input
                 </div>
               </div>
@@ -120,7 +125,7 @@
                    x-data="{ currentURL: window.location.href.replace('http://', '').replace('https://', '').slice(0, -1) }">
                 <button @click="$persistDelete('textareaInput')"
                         aria-describedby="tooltipDeleteTextareaInput"
-                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
                         type="button">
                   <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
                        xmlns="http://www.w3.org/2000/svg">
@@ -131,9 +136,10 @@
                   </svg>
                   <span class="sr-only">Delete</span>
                 </button>
-                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
-                     id="tooltipDeleteTextareaInput"
-                     role="tooltip">
+                <div
+                  class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                  id="tooltipDeleteTextareaInput"
+                  role="tooltip">
                   Delete saved input for <span x-text="currentURL"></span>
                 </div>
               </div>
@@ -159,9 +165,11 @@
               <span class="shrink-0 text-neutral-500">$</span>
               <div class="flex gap-1">
                 <span>hexdump</span>
-                <output aria-label="hexdump command option"
-                        class="text-yellow-500"
-                        x-text="selected"></output>
+                <output
+                  aria-label="hexdump command option"
+                  class="text-yellow-500"
+                  x-text="selected"
+                ></output>
               </div>
             </code>
 
@@ -178,7 +186,7 @@
                 <button @click="$persistDelete('selected')"
                         aria-describedby="tooltipDeleteSelectedOption"
                         aria-label="Delete persisted selected command option from localStorage"
-                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-4 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
+                        class="inline-flex cursor-pointer items-center gap-3 rounded-md bg-rose-500 px-2 py-2 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-rose-500 dark:text-white dark:focus-visible:outline-white"
                         type="button">
                   <svg class="h-4 w-4 shrink-0" fill="none" height="24" viewBox="0 0 24 24" width="24"
                        xmlns="http://www.w3.org/2000/svg">
@@ -189,9 +197,10 @@
                   </svg>
                   <span class="sr-only">Delete</span>
                 </button>
-                <div class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
-                     id="tooltipDeleteSelectedOption"
-                     role="tooltip">
+                <div
+                  class="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                  id="tooltipDeleteSelectedOption"
+                  role="tooltip">
                   Delete saved option for <span x-text="currentURL"></span>
                 </div>
               </div>
@@ -214,38 +223,57 @@
                   style="align-content:center; height:1.5rem; top:-.5rem; left:50%;">
             <abbr title="Standard Output">stdout</abbr>
           </header>
+
           <!-- COPY BUTTON ---------------------------------- -->
-          <div class="sticky top-9 top-[calc(4.5rem+2rem)] md:top-[calc(5.75rem+2rem)]">
-            <div class="absolute right-1 bottom-1 flex h-9 items-center">
-              <div class="flex items-center rounded px-0 font-sans text-xs bg-token-sidebar-surface-primary text-token-text-secondary dark:bg-token-main-surface-secondary"
+          <div class="sticky top-[calc(1rem+2rem)] md:top-[calc(3rem+2rem)]">
+            <div class="absolute right-1 top-2 flex h-9 items-center">
+              <div
+                class="relative flex items-center rounded px-0 font-sans text-xs bg-token-sidebar-surface-primary text-token-text-secondary dark:bg-token-main-surface-secondary"
               >
-                <span class data-state="closed">
-                  <button aria-label="Copy"
-                          class="mb-2 flex items-center gap-1 rounded bg-neutral-900 px-1 py-1 text-xs font-medium leading-6 text-white hover:bg-neutral-700"
-                          onclick="copyOutput()"
-                          title="Copy output" type="button">
-                    <svg class="icon-sm scale-[.85]" fill="none" height="24" viewBox="0 0 24 24" width="24"
-                         xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd"
-                                  d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
-                                  fill="currentColor"
-                                  fill-rule="evenodd"></path>
-                    </svg>
-                    <span class="sr-only">Copy</span>
-                  </button>
-                </span>
+                <button
+                  aria-describedby="tooltipCopyOutput"
+                  aria-label="Copy"
+                  class="inline-flex cursor-pointer items-center gap-3 rounded-md hover:bg-neutral-500 px-1 py-1 text-sm font-medium tracking-wide text-white peer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:hover:bg-neutral-500 dark:text-white dark:focus-visible:outline-white"
+                  onclick="copyOutput()"
+                  title="Copy output" type="button"
+                >
+                  <svg class="size-6 cursor-pointer text-onSurfaceDark" fill="none" stroke="currentColor"
+                       stroke-width="1.5"
+                       viewBox="0 0 24 24" x-show="!copied" x-transition:enter="transition duration-200 ease-out"
+                       x-transition:enter-end="opacity-100" x-transition:enter-start="opacity-0"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <!--                  <svg class="icon-sm scale-[.85]" fill="none" height="24" viewBox="0 0 24 24" width="24"-->
+                  <!--                       xmlns="http://www.w3.org/2000/svg">-->
+                  <!--                    <path clip-rule="evenodd"-->
+                  <!--                          d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"-->
+                  <!--                          fill="currentColor"-->
+                  <!--                          fill-rule="evenodd"></path>-->
+                  <!--                  </svg>-->
+                </button>
+                <div
+                  class="absolute top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-center text-sm text-white opacity-0 peer-hover:opacity-100 peer-focus:opacity-100 transition-all ease-out bg-neutral-950 dark:bg-white dark:text-neutral-900"
+                  id="tooltipCopyOutput"
+                  role="tooltip">
+                  Copy output
+                </div>
               </div>
             </div>
           </div>
           <!-- ---------------------------------------------- -->
 
           <!-- HEXDUMP OUTPUT ------------------------------- -->
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto mt-4">
             <pre>
-              <output aria-label="Processed text to hex"
-                      class="text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
-                      id="outputBytes"
-                      style="white-space:pre;"
+              <output
+                aria-label="Processed text to hex"
+                class="text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
+                id="outputBytes"
+                style="white-space:pre;"
               ></output>
             </pre>
             <!-- Loading/Empty Skeleton -->
@@ -268,7 +296,9 @@
     </div>
   </div>
 </main>
-<footer class="sr-only fixed right-0 bottom-0 left-0 flex items-center justify-center py-2 text-center font-mono text-sm space-x-2">
+
+<footer
+  class="sr-only fixed right-0 bottom-0 left-0 flex items-center justify-center py-2 text-center font-mono text-sm space-x-2">
   <p>&copy; 2024</p>
 </footer>
 </body>

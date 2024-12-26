@@ -3,12 +3,12 @@
 let go = new Go();
 
 WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
-    .then((res) => {
-      go.run(res.instance)
-    })
-    .catch((err) => {
-      console.error("Failed to load Wasm:", err);
-    });
+  .then((res) => {
+    go.run(res.instance)
+  })
+  .catch((err) => {
+    console.error("Failed to load Wasm:", err);
+  });
 
 /**
  * Triggered by a user event such as a button's `onclick` trigger.
@@ -59,14 +59,11 @@ function copyToClipboard(s) {
       }
     });
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(s).then(
-          () => {
-            /* Resolved - text copied to clipboard successfully */
-          },
-          (err) => {
-            console.error("Failed to copy text to the clipboard:", err);
-          },
-      );
+      navigator.clipboard.writeText(s).then(() => {
+        /* Resolved - text copied to clipboard successfully */
+      }, (err) => {
+        console.error("Failed to copy text to the clipboard:", err);
+      },);
       return;
     }
   }
