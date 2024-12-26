@@ -29,9 +29,15 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const base =/** @type {HTMLBaseElement} */ document.createElement('base');
-      base.href = window.location.hostname === "localhost" ? "/" : "/hexed/";
+      const hostname = window.location.hostname;
+      if (hostname === "localhost" || (hostname === "0.0.0.0" && window.location.protocol === "http:")) {
+        base.href = "/"; // Defaults to location.href
+      } else {
+        const repositoryName = "hexed"
+        base.href = `${window.location.hostname}/${repositoryName}/${window.location.pathname}`;
+      }
       document.head.appendChild(base);
-    }) // base.href = window.location.hostname==="localhost" ? "" : window.location.hostname+window.location.pathname;
+    })
   </script>
 </head>
 
