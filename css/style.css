@@ -1,36 +1,38 @@
 :root {
-	color-scheme: light dark;
-	--bg: light-dark(white, black);
-	--fg: light-dark(black, white);
+    color-scheme: light dark;
+    --bg: light-dark(white, black);
+    --fg: light-dark(black, white);
 }
 
-body {}
+body {
+    overflow-inline: hidden;
+}
 
 [role=button],
 button {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .omni-theme {
-	background: var(--bg, light-dark(white, black));
-	color: var(--fg, light-dark(black, white));
-	/* background: light-dark(white, black); */
-	/* color: light-dark(black, white); */
+    background: var(--bg, light-dark(white, black));
+    color: var(--fg, light-dark(black, white));
+    /* background: light-dark(white, black); */
+    /* color: light-dark(black, white); */
 }
 
 .centered {
-	display: block;
-	align-content: center;
+    display: block;
+    align-content: center;
 }
 
 .container {
-	text-align: center;
+    text-align: center;
 }
 
 /* Source: chatgpt.com <svg></svg> */
 .icon-sm {
-	stroke-width: 2;
-	flex-shrink: 0;
-	height: 1rem;
-	width: 1rem;
+    stroke-width: 2;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
 }
