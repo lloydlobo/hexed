@@ -25,9 +25,14 @@
   <script src="wasm_exec.js"></script>
   <script defer src="js/main.js"></script>
 
-  <!--  set the base URL for all relative links:-->
-  <!--    <base href="/" id="base-tag">-->
-  <base x-bind:href="window.location.hostname === `localhost` ? `/` : `/hexed/`">
+  <!-- Set the base URL for all relative links -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const base =/** @type {HTMLBaseElement} */ document.createElement('base');
+      base.href = window.location.hostname === "localhost" ? "/" : "/hexed/";
+      document.head.appendChild(base);
+    }) // base.href = window.location.hostname==="localhost" ? "" : window.location.hostname+window.location.pathname;
+  </script>
 </head>
 
 <body class="omni-theme">
