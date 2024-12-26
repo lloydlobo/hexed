@@ -38,6 +38,9 @@ var (
 			run("rm", "-f", progn)
 		},
 		Build: func() {
+            //run("cp", "$(go env GOROOT)/misc/wasm/wasm_exec.js", "dist/")
+            run("go","env","GOROOT")
+            run("cp",strings.Fields("cp /usr/local/go/misc/wasm/wasm_exec.js .")[1:]...) // cp $(go env GOROOT)/misc/wasm/wasm_exec.js .
 			run("go", "build", "-o", progn, "main.go")
 		},
 		Serve: func() {
