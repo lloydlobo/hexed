@@ -33,8 +33,7 @@
       if (hostname === "localhost" || (hostname === "0.0.0.0" && window.location.protocol === "http:")) {
         base.href = location.href; // Defaults to location.href
       } else {
-        // base.href = `${window.location.hostname}${window.location.pathname}`;
-        base.href = window.location.pathname
+        base.href = window.location.pathname //> <base href="/hexed/">
       }
       document.head.appendChild(base);
     })
@@ -280,7 +279,7 @@
             <pre>
               <output
                 aria-label="Processed text to hex"
-                class="text-wrap text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
+                class="text-[min(3dvw,0.8rem)] block min-h-20 py-2 min-w-[78ch]"
                 id="outputBytes"
               ></output>
             </pre>

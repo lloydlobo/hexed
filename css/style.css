@@ -4,8 +4,12 @@
     --fg: light-dark(black, white);
 }
 
-body {
-    overflow-inline: hidden;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /*HACK hide excess space towards inline-end*/
+    overflow-x: hidden;
 }
 
 [role=button],
