@@ -23,7 +23,11 @@ func Hexdump(s string, opts []string) string {
 		if len(out) == 0 {
 			return "0a"
 		}
-		return out
+        const isContiguous = !true
+        if isContiguous {
+            return out
+        }
+        return chunkString(out, "\n", (hexChunkSize+hexChunkSepLen)*16)
 	}
 
 	switch cmd := opts[0]; cmd {
