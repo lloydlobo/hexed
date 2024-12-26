@@ -33,7 +33,8 @@
       if (hostname === "localhost" || (hostname === "0.0.0.0" && window.location.protocol === "http:")) {
         base.href = location.href; // Defaults to location.href
       } else {
-        base.href = `${window.location.hostname}/${window.location.pathname}`;
+        // base.href = `${window.location.hostname}${window.location.pathname}`;
+        base.href = window.location.pathname
       }
       document.head.appendChild(base);
     })
