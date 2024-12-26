@@ -31,10 +31,9 @@
       const base =/** @type {HTMLBaseElement} */ document.createElement('base');
       const hostname = window.location.hostname;
       if (hostname === "localhost" || (hostname === "0.0.0.0" && window.location.protocol === "http:")) {
-        base.href = "/"; // Defaults to location.href
+        base.href = location.href; // Defaults to location.href
       } else {
-        const repositoryName = "hexed"
-        base.href = `${window.location.hostname}/${repositoryName}/${window.location.pathname}`;
+        base.href = `${window.location.hostname}/${window.location.pathname}`;
       }
       document.head.appendChild(base);
     })
@@ -45,7 +44,7 @@
 <header class="bg-[var(--bg)] md:fixed md:left-0 md:right-0 md:top-0 md:z-30">
   <div class="m-auto px-3 text-base py-[9px] md:py-[18px] md:px-4 md:px-5 md:pt-0 lg:px-4 xl:px-5">
     <nav class="mx-auto md:max-w-3xl flex items-center justify-between pt-3!">
-      <a class="font-mono font-semibold" href="/">he<span class="text-lg text-blue-300">x</span>ed</a>
+      <a class="font-mono font-semibold" href="">he<span class="text-lg text-blue-300">x</span>ed</a>
       <div class="hidden items-center justify-end py-4 pr-6 text-neutral-800 space-x-6 md:flex">
         <a class="block hover:text-neutral-600" href="https://github.com/lloydlobo/hexed">
           <svg
