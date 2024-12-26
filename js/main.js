@@ -1,11 +1,14 @@
-const go = new Go();
+// Go: globalThis.Go
+// dist/ wasm_exec. js
+let go = new Go();
+
 WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
-  .then((res) => {
-    go.run(res.instance);
-  })
-  .catch((err) => {
-    console.error("Failed to load Wasm:", err);
-  });
+    .then((res) => {
+      go.run(res.instance)
+    })
+    .catch((err) => {
+      console.error("Failed to load Wasm:", err);
+    });
 
 /**
  * Triggered by a user event such as a button's `onclick` trigger.
@@ -13,20 +16,20 @@ WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
  * Updates the output element with the result.
  * @return {void}
  */
-function processInput() {
-  // PERF
-  // new ArrayBuffer();
-  // new TypedArray();
-  const textarea = document.getElementById("input");
-  const options = document.getElementById("options");
-  let hexdump;
-  if (options.value === "") {
-    // Default for Option "hex"
-    hexdump = getMessage(textarea.value);
+function processInput() { // PERF: new ArrayBuffer(); new TypedArray();
+  const textAreaElement = /** @type{HTMLTextAreaElement} */ document.getElementById("input");
+  const selectElement = /** @type{HTMLSelectElement} */ document.getElementById("idSelectOption");
+
+  /**@type{string|undefined}*/
+  let result;
+  if (selectElement.value === "") {
+    result = /** @type{string} */ getMessage(textAreaElement.value);
   } else {
-    hexdump = getMessage(textarea.value, options.value);
+    result = /** @type{string} */ getMessage(textAreaElement.value, selectElement.value);
   }
-  document.getElementById("outputBytes").textContent = hexdump;
+
+  let outputElement = /** @type{HTMLOutputElement} */ document.getElementById("outputBytes");
+  outputElement.textContent = result;
 }
 
 /**
@@ -34,9 +37,8 @@ function processInput() {
  * @return {void}
  */
 function copyOutput() {
-  const output = document.getElementById("outputBytes");
-  const text = output.textContent;
-  copyToClipboard(text);
+  const output = /** @type{HTMLOutputElement} */ document.getElementById("outputBytes");
+  copyToClipboard(output.textContent);
 }
 
 /**
@@ -49,38 +51,35 @@ function copyOutput() {
  */
 function copyToClipboard(s) {
   // deno-lint-ignore no-window-prefix, no-window
-  if (window.isSecureContext) {
-    // Clipboard API is only supported for pages served over HTTPS.
-    navigator.permissions
-      .query({ name: "write-on-clipboard" })
-      .then((result) => {
-        if (result.name == "granted" || result.state == "prompt") {
-          console.log("'write' access granted");
-        }
-      });
+  if (window.isSecureContext) { // Clipboard API is only supported for pages served over HTTPS.
+    const permissionDes = /** @type{PermissionDescriptor} */ {name: "persistent-storage"} // Why no "write-on-clipboard" ???
+    navigator.permissions.query(permissionDes).then((result) => {
+      if (result.name === "granted" || result.state === "prompt") {
+        console.log("'write' access granted");
+      }
+    });
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(s).then(
-        () => {
-          /* Resolved - text copied to clipboard successfully */
-        },
-        (err) => {
-          console.error("Failed to copy text:", err);
-          /* Rejected - text failed to copy to the clipboard */
-        },
+          () => {
+            /* Resolved - text copied to clipboard successfully */
+          },
+          (err) => {
+            console.error("Failed to copy text to the clipboard:", err);
+          },
       );
       return;
     }
   }
 
-  const textarea = document.createElement("textarea");
+  const textarea = /** @type{HTMLTextAreaElement} */ document.createElement("textarea");
   textarea.value = s;
   textarea.style.position = "fixed"; // Avoid scrolling to page bottom
   document.body.appendChild(textarea);
-
   textarea.focus(); // 30ms
-  textarea.select();// 3ms
+  textarea.select(); // 3ms
 
   try {
+    /** @deprecated */
     const success = document.execCommand("copy");
     if (!success) {
       console.error("Failed to copy");
@@ -89,6 +88,5 @@ function copyToClipboard(s) {
     console.error("Fallback copy failed:", err);
     alert("Manual copy: " + s);
   }
-
   document.body.removeChild(textarea);
 }
